@@ -1,0 +1,52 @@
+/* ══════════════════════════════════════
+   BLENDERFOX — SIDEBAR CSS
+══════════════════════════════════════ */
+
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  flex-shrink: 0; height: 100vh; overflow-y: auto;
+}
+.sidebar::-webkit-scrollbar { display: none; }
+
+.sidebar-brand { padding: 24px 20px 20px; border-bottom: 1px solid var(--border); }
+.sidebar-brand-name { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -.5px; }
+.sidebar-brand-name span { color: var(--c); }
+.sidebar-brand-sub { font-size: 11px; color: var(--text-lt); margin-top: 2px; }
+
+.sidebar-nav { padding: 12px 10px; flex: 1; }
+.nav-section-label {
+  font-size: 10px; font-weight: 700; color: var(--stone);
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: 8px 10px 6px;
+}
+.nav-btn {
+  width: 100%; display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border: none; background: transparent;
+  font-family: var(--font); font-size: 14px; font-weight: 600;
+  color: var(--text-md); border-radius: var(--r-sm); cursor: pointer;
+  transition: all .15s; text-align: left; margin-bottom: 2px;
+  text-decoration: none;
+}
+.nav-btn svg { width: 18px; height: 18px; stroke: var(--stone); fill: none; stroke-width: 2; flex-shrink: 0; transition: stroke .15s; }
+.nav-btn:hover { background: var(--warm); color: var(--text); }
+.nav-btn:hover svg { stroke: var(--c); }
+.nav-btn.active { background: var(--c-bg); color: var(--c-dk); font-weight: 600; }
+.nav-btn.active svg { stroke: var(--c); }
+.nav-badge { margin-left: auto; background: var(--c); color: #fff; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 20px; }
+
+.sidebar-user { padding: 14px 16px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+.sidebar-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--c), var(--c-lt));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 700; font-size: 15px; flex-shrink: 0;
+}
+.sidebar-user-info { flex: 1; min-width: 0; }
+.sidebar-user-name  { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sidebar-user-level { font-size: 11px; color: var(--text-lt); }
+.sidebar-logout { border: none; background: transparent; cursor: pointer; padding: 4px; border-radius: 6px; transition: background .15s; }
+.sidebar-logout:hover { background: #FEE8E8; }
+.sidebar-logout svg { width: 16px; height: 16px; stroke: #D32F2F; fill: none; stroke-width: 2; display: block; }
