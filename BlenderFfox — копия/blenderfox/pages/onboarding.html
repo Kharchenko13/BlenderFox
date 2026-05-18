@@ -3,258 +3,112 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BlenderFox — Добро пожаловать</title>
+<title>BlenderFox</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; overflow: hidden; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Nunito',sans-serif;background:#fff;color:#1E1610;-webkit-font-smoothing:antialiased;}
 
-body {
-  font-family: 'Nunito', sans-serif;
-  background: #fff;
-  color: #1E1610;
-  -webkit-font-smoothing: antialiased;
-}
+.ob-wrap{display:flex;height:100vh;align-items:center;}
 
-/* ── Layout ── */
-.ob-wrap {
-  display: flex;
-  height: 100vh;
-  align-items: center;
-}
-
-/* ── Left: текст ── */
-.ob-left {
-  flex: 1;
-  padding: 0 72px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0;
-  z-index: 1;
+/* LEFT */
+.ob-left{
+  flex:1;
+  padding:0 72px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding-bottom:80px;
 }
 
-.ob-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: #FDF0E8;
-  color: #C5633D;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .07em;
-  text-transform: uppercase;
-  padding: 6px 14px;
-  border-radius: 20px;
-  margin-bottom: 24px;
-  width: fit-content;
+.ob-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(48px,5.5vw,72px);
+  font-weight:800;
+  line-height:1.0;
+  letter-spacing:-2px;
+  color:#1E1610;
+  margin-bottom:18px;
+}
+.ob-title span{color:#E07B54;}
+
+.ob-tagline{
+  font-size:15px;
+  color:#9A8070;
+  line-height:1.7;
+  max-width:420px;
+  margin-bottom:36px;
+  font-weight:500;
 }
 
-.ob-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(42px, 5vw, 64px);
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -2px;
-  color: #1E1610;
-  margin-bottom: 8px;
-}
-.ob-title span { color: #E07B54; }
-
-.ob-subtitle {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(18px, 2vw, 26px);
-  font-weight: 700;
-  color: #9A8070;
-  margin-bottom: 28px;
-  letter-spacing: -.5px;
+.ob-features{display:flex;flex-direction:column;gap:10px;margin-bottom:40px;}
+.ob-feature{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:600;color:#63503E;}
+.ob-feature-icon{
+  width:34px;height:34px;border-radius:9px;
+  background:#FDF0E8;display:flex;align-items:center;
+  justify-content:center;font-size:17px;flex-shrink:0;
 }
 
-.ob-desc {
-  font-size: 16px;
-  color: #63503E;
-  line-height: 1.7;
-  max-width: 440px;
-  margin-bottom: 44px;
+.ob-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:15px 34px;
+  background:linear-gradient(135deg,#E07B54,#EFA07A);
+  color:#fff;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;
+  border:none;border-radius:16px;cursor:pointer;text-decoration:none;
+  box-shadow:0 8px 28px rgba(224,123,84,.38);transition:all .2s;width:fit-content;
+}
+.ob-btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(224,123,84,.45);}
+.ob-btn:active{transform:scale(.98);}
+.ob-btn svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.5;}
+
+.ob-login{margin-top:16px;font-size:13px;color:#9A8070;}
+.ob-login a{color:#E07B54;font-weight:700;text-decoration:none;}
+.ob-login a:hover{text-decoration:underline;}
+
+/* RIGHT */
+.ob-right{
+  width:580px;flex-shrink:0;height:100vh;
+  display:flex;align-items:flex-end;justify-content:center;
+  position:relative;
+  background:radial-gradient(ellipse 80% 70% at 60% 50%,rgba(224,123,84,.07) 0%,transparent 70%);
 }
 
-.ob-features {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 48px;
-}
-.ob-feature {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #63503E;
-}
-.ob-feature-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: #FDF0E8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
+/* FOX */
+.fox-container{position:relative;width:580px;height:580px;}
+
+.fox-head{
+  position:relative;width:100%;height:100%;
+  object-fit:contain;z-index:2;
 }
 
-.ob-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 36px;
-  background: linear-gradient(135deg, #E07B54, #EFA07A);
-  color: #fff;
-  font-family: 'Nunito', sans-serif;
-  font-size: 17px;
-  font-weight: 800;
-  border: none;
-  border-radius: 16px;
-  cursor: pointer;
-  text-decoration: none;
-  box-shadow: 0 8px 28px rgba(224,123,84,.4);
-  transition: all .2s;
-  width: fit-content;
+.eye{
+  position:absolute;width:95px;height:95px;
+  overflow:hidden;border-radius:50%;z-index:1;
 }
-.ob-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 36px rgba(224,123,84,.45);
-}
-.ob-btn:active { transform: scale(.98); }
-.ob-btn svg {
-  width: 20px; height: 20px;
-  stroke: #fff; fill: none; stroke-width: 2.5;
-}
+.eye-left {top:37%;left:26%;}
+.eye-right{top:37%;right:26%;}
 
-.ob-login {
-  margin-top: 18px;
-  font-size: 13px;
-  color: #9A8070;
+.pupil{
+  position:absolute;width:55px;height:55px;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  transition:transform 0.08s ease-out;
 }
-.ob-login a {
-  color: #E07B54;
-  font-weight: 700;
-  text-decoration: none;
-}
-.ob-login a:hover { text-decoration: underline; }
-
-/* ── Right: лиса ── */
-.ob-right {
-  width: 520px;
-  flex-shrink: 0;
-  height: 100vh;
-  display: flex;
-  align-items: flex-end;      /* прижимаем к низу */
-  justify-content: center;
-  position: relative;
-  background: radial-gradient(ellipse 80% 70% at 60% 50%,
-    rgba(224,123,84,.08) 0%, transparent 70%);
-}
-
-/* Декоративные круги */
-.ob-right::before {
-  content: '';
-  position: absolute;
-  width: 380px; height: 380px;
-  border-radius: 50%;
-  border: 2px solid rgba(224,123,84,.12);
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-}
-.ob-right::after {
-  content: '';
-  position: absolute;
-  width: 280px; height: 280px;
-  border-radius: 50%;
-  border: 2px solid rgba(224,123,84,.18);
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-/* ── Fox container ── */
-.fox-container {
-  position: relative;
-  width: 460px;
-  height: 460px;
-  z-index: 1;
-  /* анимация убрана — лиса стоит на месте */
-}
-
-.fox-head {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: bottom;    /* картинка прижата к низу контейнера */
-}
-
-/* Глаза — большие, позади головы */
-.eye {
-  position: absolute;
-  width: 170px;
-  height: 170px;
-  border-radius: 50%;
-  z-index: 0;
-  overflow: hidden;   /* зрачок никогда не вылетает за орбиту */
-}
-.eye-left  { top: 35%; left: 22%; }
-.eye-right { top: 35%; right: 22%; }
-
-.pupil {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transition: transform 0.06s ease-out;
-}
-.pupil img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.fox-head {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: bottom;
-  position: relative;
-  z-index: 1;   /* поверх глаз */
-}
-
-/* ── Разделитель ── */
-.ob-divider {
-  width: 1px;
-  height: 60vh;
-  background: linear-gradient(to bottom,
-    transparent, rgba(229,217,206,.6) 20%,
-    rgba(229,217,206,.6) 80%, transparent);
-  flex-shrink: 0;
-}
+.pupil img{width:100%;height:100%;object-fit:contain;}
 </style>
 </head>
 <body>
 
 <div class="ob-wrap">
 
-  <!-- Левая часть: текст -->
   <div class="ob-left">
-    <div class="ob-badge">🦊 Платформа 3D-обучения</div>
-
     <div class="ob-title">Blender<span>Fox</span></div>
-    <div class="ob-subtitle">Учись 3D — шаг за шагом</div>
 
-    <p class="ob-desc">
-      Освой Blender с нуля до профессионального уровня.
-      Структурированные модули, практические задания
-      и система достижений — всё чтобы ты не останавливался.
+    <p class="ob-tagline">
+      Образовательная платформа, где 3D-моделирование превращается
+      в увлекательный путь с чёткими модулями, практическими кейсами
+      и системой достижений.
     </p>
 
     <div class="ob-features">
@@ -278,75 +132,51 @@ body {
     </a>
 
     <div class="ob-login">
-      Уже есть аккаунт?
-      <a href="auth.html">Войти →</a>
+      Уже есть аккаунт? <a href="auth.html">Войти →</a>
     </div>
   </div>
 
-  <!-- Разделитель -->
-  <div class="ob-divider"></div>
-
-  <!-- Правая часть: лиса -->
   <div class="ob-right">
-    <div class="fox-container" id="foxContainer">
-
-      <!-- Глаза ПОЗАДИ головы — идут первыми в HTML -->
+    <div class="fox-container">
+      <img src="../assets/fox-head.jpg" class="fox-head" alt="Лиса">
       <div class="eye eye-left">
         <div class="pupil" id="pupil-left">
-          <img src="../assets/eye.jpg" alt="">
+          <img src="../assets/eye.jpg" alt="eye">
         </div>
       </div>
       <div class="eye eye-right">
         <div class="pupil" id="pupil-right">
-          <img src="../assets/eye.jpg" alt="">
+          <img src="../assets/eye.jpg" alt="eye">
         </div>
       </div>
-
-      <!-- Голова лисы ПОВЕРХ глаз -->
-      <img src="../assets/fox-head.jpg"
-           class="fox-head"
-           alt="BlenderFox">
-
     </div>
   </div>
 
 </div>
 
 <script>
-// Авторедирект если уже залогинен
-(function() {
-  if (localStorage.getItem('lc_user')) {
-    window.location.replace('home.html');
-  }
+(function(){
+  if(localStorage.getItem('lc_user')) window.location.replace('home.html');
 })();
 
-// Лиса следит за курсором
 const pupilLeft  = document.getElementById('pupil-left');
 const pupilRight = document.getElementById('pupil-right');
 
-document.addEventListener('mousemove', (e) => {
-  movePupil(pupilLeft,  e);
-  movePupil(pupilRight, e);
+document.addEventListener('mousemove',(e)=>{
+  movePupil(pupilLeft, e);
+  movePupil(pupilRight,e);
 });
 
-function movePupil(pupil, mouseEvent) {
-  const eyeEl = pupil.parentElement;
-  const rect  = eyeEl.getBoundingClientRect();
-
-  const eyeCenterX = rect.left + rect.width  / 2;
-  const eyeCenterY = rect.top  + rect.height / 2;
-
-  const dx = mouseEvent.clientX - eyeCenterX;
-  const dy = mouseEvent.clientY - eyeCenterY;
-
-  // Жёсткий лимит: зрачок (100px) внутри глаза (170px)
-  // максимальный сдвиг = (170 - 100) / 2 - 2px запас = 33px
-  const maxMove = 33;
-
-  const dist  = Math.sqrt(dx * dx + dy * dy);
-  const ratio = dist > 0 ? Math.min(maxMove / dist, 1) : 0;
-
-  pupil.style.transform = `translate(calc(-50% + ${dx * ratio}px), calc(-50% + ${dy * ratio}px))`;
+function movePupil(pupil,mouseEvent){
+  const r = pupil.parentElement.getBoundingClientRect();
+  const cx = r.left + r.width/2;
+  const cy = r.top  + r.height/2;
+  let dx = mouseEvent.clientX - cx;
+  let dy = mouseEvent.clientY - cy;
+  const dist = Math.sqrt(dx*dx+dy*dy);
+  const max  = 10;
+  if(dist>max){dx=(dx/dist)*max;dy=(dy/dist)*max;}
+  pupil.style.transform=`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px))`;
 }
 </script>
 </body>
