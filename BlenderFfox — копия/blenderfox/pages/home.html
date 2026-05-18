@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlenderFox — Главная</title>
+<link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="../css/sidebar.css">
+<link rel="stylesheet" href="../css/home.css">
+<link rel="stylesheet" href="../css/medals.css">
+</head>
+<body>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../js/config/supabase.js"></script>
+
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <div class="page-title" id="home-title">Добро пожаловать 👋</div>
+        <div class="page-sub">Продолжай учиться — каждый урок делает тебя лучше</div>
+      </div>
+    </div>
+    <div class="page-body">
+
+      <div class="welcome-banner">
+        <div class="welcome-banner-bg"></div>
+        <div class="welcome-banner-content">
+          <div>
+            <div class="welcome-text-title" id="welcome-title">Привет от BlenderFox!</div>
+            <div class="welcome-text-sub">Сегодня хороший день чтобы создать что-то крутое.<br>Выбери задание и начни прямо сейчас!</div>
+          </div>
+          <div class="welcome-cta">
+            <a href="tasks.html" class="btn-sm">Перейти к заданиям →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="home-grid">
+        <div class="stat-card fade-up">
+          <div class="stat-card-label">Заданий выполнено</div>
+          <div class="stat-card-val" id="stat-done">0</div>
+          <div class="stat-card-desc">из <span id="stat-total">10</span> заданий</div>
+        </div>
+        <div class="stat-card fade-up">
+          <div class="stat-card-label">Пройдено модулей</div>
+          <div class="stat-card-val" id="stat-modules">0</div>
+          <div class="stat-card-desc">из 4 модулей</div>
+        </div>
+        <div class="stat-card fade-up">
+          <div class="stat-card-label">Медалей получено</div>
+          <div class="stat-card-val" id="stat-medals">0</div>
+          <div class="stat-card-desc" style="cursor:pointer;color:var(--c)" onclick="location.href='medals.html'">Посмотреть все →</div>
+        </div>
+      </div>
+
+      <div class="section-title">Модули курса</div>
+      <div id="home-modules"></div>
+    </div>
+  </main>
+</div>
+
+<!-- JS: порядок важен — сначала данные, потом логика, потом UI -->
+<script src="../js/utils/data.js"></script>
+<script src="../js/auth/session.js"></script>
+<script src="../js/auth/auth.js"></script>
+<script src="../js/db/completed.db.js"></script>
+<script src="../js/db/medals.db.js"></script>
+<script src="../js/db/saved.db.js"></script>
+<script src="../js/db/tasks.db.js"></script>
+<script src="../js/utils/medals.logic.js"></script>
+<script src="../js/utils/router.js"></script>
+<script src="../js/ui/sidebar.js"></script>
+<script src="../js/ui/medals.ui.js"></script>
+<script src="../js/ui/home.ui.js"></script>
+<script>
+(async function() {
+  const u = checkAuth();
+  if (!u) return;
+
+  document.getElementById('home-title').textContent    = `Добро пожаловать, ${u.name} 👋`;
+  document.getElementById('welcome-title').textContent = `Привет, ${u.name}!`;
+
+  renderSidebar('home');
+  initMedalUI();
+  await syncFromSupabase();
+
+  const stats = getStats();
+  document.getElementById('stat-done').textContent    = stats.done;
+  document.getElementById('stat-total').textContent   = stats.total;
+  document.getElementById('stat-modules').textContent = stats.modsDone;
+  document.getElementById('stat-medals').textContent  = stats.meds;
+
+  renderHomeModules(getCompletedTasks());
+})();
+</script>
+</body>
+</html>

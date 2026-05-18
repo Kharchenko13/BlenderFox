@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlenderFox — Вход</title>
+<link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="../css/auth.css">
+</head>
+<body>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../js/config/supabase.js"></script>
+
+<div class="auth-screen">
+  <div class="auth-box">
+    <div class="auth-brand">
+      <div class="auth-brand-name">Blender<span>Fox</span></div>
+      <div class="auth-brand-sub">Учись 3D-моделированию — шаг за шагом</div>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchTab('login',this)">Войти</button>
+      <button class="auth-tab"        onclick="switchTab('reg',this)">Регистрация</button>
+    </div>
+
+    <div id="form-login">
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" id="login-email" type="email" placeholder="fox@blender.ru">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Пароль</label>
+        <input class="form-input" id="login-pass" type="password" placeholder="••••••••">
+      </div>
+      <button class="btn-primary" id="btn-login" onclick="handleLogin()">Войти в платформу →</button>
+    </div>
+
+    <div id="form-reg" style="display:none">
+      <div class="form-group">
+        <label class="form-label">Имя</label>
+        <input class="form-input" id="reg-name" type="text" placeholder="Введите имя">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" id="reg-email" type="email" placeholder="Введите Email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Пароль</label>
+        <input class="form-input" id="reg-pass" type="password" placeholder="Минимум 6 символов">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Повтор пароля</label>
+        <input class="form-input" id="reg-confirm" type="password" placeholder="••••••••">
+      </div>
+      <button class="btn-primary" id="btn-reg" onclick="handleRegister()">Создать аккаунт →</button>
+    </div>
+
+    <div class="auth-error"   id="auth-error"></div>
+    <div class="auth-success" id="auth-success"></div>
+  </div>
+</div>
+
+<script src="../js/auth/session.js"></script>
+<script src="../js/auth/auth.js"></script>
+<script>
+// Уже залогинен — сразу на главную
+(function() { if (localStorage.getItem('lc_user')) window.location.replace('home.html'); })();
+
+function switchTab(tab, el) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('form-login').style.display = tab === 'login' ? '' : 'none';
+  document.getElementById('form-reg').style.display   = tab === 'reg'   ? '' : 'none';
+  document.getElementById('auth-error').textContent   = '';
+  document.getElementById('auth-success').textContent = '';
+}
+
+function showError(msg)   { document.getElementById('auth-error').textContent = msg;   document.getElementById('auth-success').textContent = ''; }
+function showSuccess(msg) { document.getElementById('auth-success').textContent = msg; document.getElementById('auth-error').textContent = ''; }
+
+function setLoading(btnId, loading) {
+  const btn = document.getElementById(btnId);
+  btn.disabled = loading;
+  btn.textContent = loading ? 'Загрузка...' : (btnId === 'btn-login' ? 'Войти в платформу →' : 'Создать аккаунт →');
+}
+
+async function handleLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  if (!email || !pass) { showError('Заполни все поля'); return; }
+  setLoading('btn-login', true);
+  try {
+    await doLogin(email, pass);
+    window.location.replace('home.html');
+  } catch(e) {
+    showError(e.message === 'Invalid login credentials' ? 'Неверный email или пароль' : e.message);
+    setLoading('btn-login', false);
+  }
+}
+
+async function handleRegister() {
+  const name    = document.getElementById('reg-name').value.trim();
+  const email   = document.getElementById('reg-email').value.trim();
+  const pass    = document.getElementById('reg-pass').value;
+  const confirm = document.getElementById('reg-confirm').value;
+  if (!name || !email || !pass || !confirm) { showError('Заполни все поля'); return; }
+  if (!/\S+@\S+\.\S+/.test(email))          { showError('Некорректный email'); return; }
+  if (pass.length < 6)                       { showError('Пароль — минимум 6 символов'); return; }
+  if (pass !== confirm)                      { showError('Пароли не совпадают'); return; }
+  setLoading('btn-reg', true);
+  try {
+    await doRegister(name, email, pass);
+    showSuccess('Аккаунт создан! Перенаправляем...');
+    setTimeout(() => window.location.replace('home.html'), 800);
+  } catch(e) {
+    showError(e.message.includes('already registered') ? 'Этот email уже зарегистрирован' : e.message);
+    setLoading('btn-reg', false);
+  }
+}
+</script>
+</body>
+</html>
