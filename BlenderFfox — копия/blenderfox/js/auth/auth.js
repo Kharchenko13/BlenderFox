@@ -4,27 +4,36 @@
 ══════════════════════════════════════ */
 
 /**
- * Вход: авторизуемся через Supabase,
- * затем подтягиваем профиль из таблицы profiles
- * и сохраняем в localStorage для быстрого доступа.
+ * Вход через Supabase Auth (email + password).
+ * Email и пароль хранятся в auth.users — НЕ в profiles.
+ * profiles содержит только имя, аватар, уровень.
  */
 async function doLogin(email, pass) {
-  // 1. Авторизация через Supabase Auth
+  // 1. Авторизация — Supabase проверяет email+пароль в auth.users
   const user = await sbLogin(email, pass);
 
-  // 2. Подтягиваем профиль из таблицы profiles
-  const profile = await sbGetProfile(user.id);
-
-  // 3. Сохраняем в localStorage
-  const name   = profile?.name   || user.user_metadata?.name || email.split('@')[0];
-  const avatar = profile?.avatar || name[0].toUpperCase();
-  const level  = profile?.level  || 1;
+  // 2. Пробуем получить профиль (имя, аватар, уровень)
+  //    Если профиль не найден — используем данные из auth.users
+  let name, avatar, level, avatar_url;
+  try {
+    const profile = await sbGetProfile(user.id);
+    name   = profile?.name      || user.user_metadata?.name || email.split('@')[0];
+    avatar = profile?.avatar    || name[0].toUpperCase();
+    level  = profile?.level     || 1;
+    avatar_url = profile?.avatar_url || null;
+  } catch(e) {
+    name   = user.user_metadata?.name || email.split('@')[0];
+    avatar = name[0].toUpperCase();
+    level  = 1;
+    avatar_url = null;
+  }
 
   localStorage.setItem('lc_user', JSON.stringify({
-    id: user.id,
+    id:         user.id,
     name,
-    email: user.email,
+    email:      user.email,
     avatar,
+    avatar_url,
     level
   }));
 
@@ -32,14 +41,33 @@ async function doLogin(email, pass) {
 }
 
 /**
- * Регистрация: создаём аккаунт в Supabase Auth.
- * Профиль создаётся автоматически через триггер в БД.
+ * Регистрация нового пользователя.
+ * Supabase создаёт запись в auth.users.
+ * Триггер handle_new_user автоматически создаёт профиль в profiles.
+ * Если триггер не сработал — создаём профиль вручную.
  */
 async function doRegister(name, email, pass) {
-  // 1. Регистрация через Supabase Auth (триггер создаст профиль)
+  // 1. Создаём аккаунт в Supabase Auth
   const user = await sbRegister(name, email, pass);
 
-  // 2. Сохраняем в localStorage
+  // 2. Если триггер не создал профиль — создаём вручную
+  if (user && user.id) {
+    try {
+      const existing = await sbGetProfile(user.id);
+      if (!existing) {
+        await getSupabase().from('profiles').insert({
+          id:     user.id,
+          name,
+          avatar: name[0].toUpperCase(),
+          level:  1
+        });
+      }
+    } catch(e) {
+      // Игнорируем — профиль создастся триггером
+    }
+  }
+
+  // 3. Сохраняем в localStorage
   localStorage.setItem('lc_user', JSON.stringify({
     id:     user.id,
     name,
@@ -52,7 +80,7 @@ async function doRegister(name, email, pass) {
 }
 
 /**
- * Выход: разлогиниваемся в Supabase и чистим localStorage.
+ * Выход: завершаем сессию в Supabase и чистим localStorage.
  */
 async function doLogout() {
   try { await sbLogout(); } catch(e) {}

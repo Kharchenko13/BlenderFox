@@ -45,3 +45,99 @@
 .menu-row-right { display: flex; align-items: center; gap: 8px; }
 .menu-chev      { width: 18px; height: 18px; stroke: var(--stone); fill: none; stroke-width: 2.5; }
 .notif-badge    { background: var(--c); color: #fff; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 20px; }
+
+/* ── Edit Profile Modal ── */
+.edit-modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.4);
+  z-index: 300;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity .2s;
+}
+.edit-modal-backdrop.open { opacity: 1; pointer-events: all; }
+
+.edit-modal {
+  background: #fff;
+  border-radius: var(--r-lg);
+  width: 440px;
+  padding: 32px 28px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.22);
+  transform: scale(.93);
+  transition: transform .25s;
+}
+.edit-modal-backdrop.open .edit-modal { transform: scale(1); }
+
+.edit-modal-title {
+  font-family: var(--font-display);
+  font-size: 20px; font-weight: 800;
+  color: var(--text); margin-bottom: 24px;
+}
+
+/* Аватар-пикер */
+.avatar-picker {
+  display: flex; align-items: center; gap: 18px; margin-bottom: 24px;
+}
+.avatar-preview {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--c), var(--c-lt));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; font-weight: 800; color: #fff;
+  flex-shrink: 0; overflow: hidden;
+  box-shadow: 0 4px 14px rgba(224,123,84,.3);
+}
+.avatar-preview img { width: 100%; height: 100%; object-fit: cover; }
+
+.avatar-picker-actions { display: flex; flex-direction: column; gap: 8px; }
+.btn-upload {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 16px; border-radius: var(--r-sm);
+  background: var(--c-bg); border: 1.5px solid var(--c-lt);
+  color: var(--c-dk); font-family: var(--font);
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  transition: background .15s;
+}
+.btn-upload:hover { background: var(--c-bg2); }
+.btn-upload svg { width: 14px; height: 14px; stroke: var(--c-dk); fill: none; stroke-width: 2.5; }
+.avatar-hint { font-size: 11px; color: var(--text-lt); }
+
+/* Поля формы */
+.edit-form-group { margin-bottom: 16px; }
+.edit-form-label {
+  font-size: 11px; font-weight: 800; color: var(--text-lt);
+  letter-spacing: .07em; text-transform: uppercase;
+  display: block; margin-bottom: 6px;
+}
+.edit-form-input {
+  width: 100%; padding: 11px 14px;
+  border: 2px solid var(--border); border-radius: var(--r-sm);
+  font-family: var(--font); font-size: 14px; color: var(--text);
+  background: #fff; outline: none; transition: border-color .2s;
+}
+.edit-form-input:focus { border-color: var(--c); }
+.edit-form-input:disabled {
+  background: var(--warm); color: var(--text-lt); cursor: not-allowed;
+}
+
+.edit-modal-actions {
+  display: flex; gap: 10px; margin-top: 24px;
+}
+.btn-save {
+  flex: 1; padding: 12px; border: none; border-radius: var(--r-sm);
+  background: linear-gradient(135deg, var(--c), var(--c-lt));
+  color: #fff; font-family: var(--font); font-size: 14px; font-weight: 800;
+  cursor: pointer; transition: all .2s;
+  box-shadow: 0 4px 14px rgba(224,123,84,.3);
+}
+.btn-save:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(224,123,84,.4); }
+.btn-save:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+.btn-cancel {
+  padding: 12px 20px; border: none; border-radius: var(--r-sm);
+  background: var(--warm); color: var(--text-md);
+  font-family: var(--font); font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: background .15s;
+}
+.btn-cancel:hover { background: var(--border); }
+
+.edit-modal-error   { font-size: 12px; color: #D32F2F; font-weight: 700; margin-top: 10px; text-align: center; min-height: 16px; }
+.edit-modal-success { font-size: 12px; color: var(--green); font-weight: 700; margin-top: 10px; text-align: center; min-height: 16px; }

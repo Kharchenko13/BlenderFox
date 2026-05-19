@@ -94,7 +94,11 @@ async function handleLogin() {
     await doLogin(email, pass);
     window.location.replace('home.html');
   } catch(e) {
-    showError(e.message === 'Invalid login credentials' ? 'Неверный email или пароль' : e.message);
+    const msg = e.message;
+    if (msg === 'Invalid login credentials')   showError('Неверный email или пароль');
+    else if (msg.includes('Email not confirmed')) showError('Подтверди email — проверь почту');
+    else if (msg.includes('rate limit'))          showError('Слишком много попыток, подожди немного');
+    else showError(msg);
     setLoading('btn-login', false);
   }
 }
