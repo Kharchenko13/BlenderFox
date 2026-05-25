@@ -76,24 +76,31 @@ body{font-family:'Nunito',sans-serif;background:#fff;color:#1E1610;-webkit-font-
 
 /* FOX */
 .fox-container{position:relative;width:580px;height:580px;}
-
 .fox-head{
-  position:relative;width:100%;height:100%;
-  object-fit:contain;z-index:2;
+  position:absolute;top:0;left:0;
+  width:100%;height:100%;
+  object-fit:contain;z-index:2;  /* голова поверх белков */
 }
 
+/* Белок глаза — под головой */
 .eye{
-  position:absolute;width:95px;height:95px;
-  overflow:hidden;border-radius:50%;z-index:1;
+  position:absolute;
+  width:160px;height:160px;
+  border-radius:50%;
+  z-index:1;
+  overflow:hidden;
+  background:transparent;
 }
-.eye-left {top:37%;left:26%;}
-.eye-right{top:37%;right:26%;}
+.eye-left {top:33%;left:26%;}
+.eye-right{top:33%;right:24%;}
 
+/* Зрачок — меньше контейнера, двигается внутри */
 .pupil{
-  position:absolute;width:55px;height:55px;
+  position:absolute;
+  width:130px;height:130px;
   top:50%;left:50%;
   transform:translate(-50%,-50%);
-  transition:transform 0.08s ease-out;
+  transition:transform 0.06s ease-out;
 }
 .pupil img{width:100%;height:100%;object-fit:contain;}
 </style>
@@ -138,7 +145,7 @@ body{font-family:'Nunito',sans-serif;background:#fff;color:#1E1610;-webkit-font-
 
   <div class="ob-right">
     <div class="fox-container">
-      <img src="../assets/fox-head.jpg" class="fox-head" alt="Лиса">
+      <!-- Глаза ПЕРВЫМИ — под головой (z-index:1) -->
       <div class="eye eye-left">
         <div class="pupil" id="pupil-left">
           <img src="../assets/eye.jpg" alt="eye">
@@ -149,6 +156,8 @@ body{font-family:'Nunito',sans-serif;background:#fff;color:#1E1610;-webkit-font-
           <img src="../assets/eye.jpg" alt="eye">
         </div>
       </div>
+      <!-- Голова ПОВЕРХ глаз (z-index:2) -->
+      <img src="../assets/fox-head.jpg" class="fox-head" alt="Лиса">
     </div>
   </div>
 
@@ -174,7 +183,8 @@ function movePupil(pupil,mouseEvent){
   let dx = mouseEvent.clientX - cx;
   let dy = mouseEvent.clientY - cy;
   const dist = Math.sqrt(dx*dx+dy*dy);
-  const max  = 10;
+  /* maxMove=8 — зрачок не улетает за границу глаза */
+  const max  = 8;
   if(dist>max){dx=(dx/dist)*max;dy=(dy/dist)*max;}
   pupil.style.transform=`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px))`;
 }
