@@ -82,9 +82,10 @@ async function syncFromSupabase() {
       const exists = localSaved[key].some(x => x.id === w.id);
       if (!exists) {
         localSaved[key].push({
-          id:    w.id,
-          title: w.title,
-          tag:   w.tag,
+          id:        w.id,
+          title:     w.title,
+          tag:       w.tag,
+          image_url: w.image_url || null,
           date:  new Date(w.created_at).toLocaleDateString('ru', { day: 'numeric', month: 'short' })
         });
       }

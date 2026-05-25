@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BlenderFox — Сохранённые работы</title>
+<script src="../js/utils/i18n.js"></script>
 <link rel="stylesheet" href="../css/main.css">
 <link rel="stylesheet" href="../css/sidebar.css">
 <link rel="stylesheet" href="../css/saved.css">
@@ -19,8 +20,8 @@
   <main class="main">
     <div class="page-header">
       <div>
-        <div class="page-title">Сохранённые работы</div>
-        <div class="page-sub">Твои работы по каждому заданию</div>
+        <div class="page-title" data-i18n="saved.title">Сохранённые работы</div>
+        <div class="page-sub"   data-i18n="saved.sub">Твои работы по каждому заданию</div>
       </div>
     </div>
     <div class="page-body" id="saved-body"></div>
@@ -29,7 +30,62 @@
 
 <div class="saving-toast" id="toast"></div>
 
+<!-- ══ МОДАЛКА: Добавить работу ══ -->
+<div class="sw-backdrop" id="add-work-backdrop">
+  <div class="sw-modal" id="add-work-modal">
+    <div class="sw-modal-title" id="aw-title">Добавить работу</div>
+    <div class="sw-task-chip"   id="aw-task-label"></div>
+
+    <!-- Зона фото -->
+    <div class="sw-photo-area" id="aw-photo-area">
+      <div class="sw-photo-placeholder" id="aw-photo-placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+        <span id="aw-photo-hint">Нажми чтобы добавить фото работы</span>
+      </div>
+      <img id="aw-photo-preview" class="sw-photo-preview" alt="preview">
+      <button class="sw-photo-remove" id="aw-photo-remove" onclick="removeWorkPhoto()">✕</button>
+    </div>
+    <input type="file" id="aw-file-input" accept="image/*" style="display:none" onchange="onWorkPhotoSelected(this)">
+
+    <!-- Название -->
+    <div class="sw-form-group">
+      <label class="sw-form-label" id="aw-name-label">Название работы</label>
+      <input class="sw-form-input" id="aw-name" type="text" maxlength="80"
+             placeholder="Например: Мой первый куб">
+    </div>
+
+    <div class="sw-error"   id="aw-error"></div>
+    <div class="sw-success" id="aw-success"></div>
+
+    <div class="sw-actions">
+      <button class="sw-btn-cancel" onclick="closeAddWorkModal()" id="aw-cancel-btn">Отмена</button>
+      <button class="sw-btn-save"   onclick="submitAddWork()"     id="aw-save-btn">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ МОДАЛКА: Просмотр работы ══ -->
+<div class="sw-backdrop" id="work-detail-backdrop">
+  <div class="sw-modal sw-detail-modal" id="work-detail-modal">
+    <div class="sw-detail-photo-wrap" id="wd-photo-wrap"></div>
+    <div class="sw-detail-body">
+      <div class="sw-detail-title" id="wd-title"></div>
+      <div class="sw-detail-meta"  id="wd-meta"></div>
+      <div class="sw-detail-date"  id="wd-date"></div>
+    </div>
+    <div class="sw-actions" style="padding:0 24px 24px">
+      <button class="sw-btn-cancel" onclick="closeWorkDetail()">Закрыть</button>
+      <button class="sw-btn-delete" onclick="deleteWork()">🗑 Удалить</button>
+    </div>
+  </div>
+</div>
+
 <script src="../js/utils/data.js"></script>
+<script src="../js/utils/data.kz.js"></script>
 <script src="../js/auth/session.js"></script>
 <script src="../js/auth/auth.js"></script>
 <script src="../js/db/completed.db.js"></script>
@@ -45,6 +101,7 @@
 (async function() {
   const u = checkAuth();
   if (!u) return;
+  applyI18n();
   renderSidebar('saved');
   initMedalUI();
   await syncFromSupabase();

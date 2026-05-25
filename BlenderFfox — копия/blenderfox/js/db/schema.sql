@@ -190,3 +190,9 @@ DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION handle_new_user();
+
+-- ══════════════════════════════════════
+-- МИГРАЦИЯ: добавить image_url в saved_works
+-- Выполни в Supabase → SQL Editor
+-- ══════════════════════════════════════
+ALTER TABLE saved_works ADD COLUMN IF NOT EXISTS image_url text;

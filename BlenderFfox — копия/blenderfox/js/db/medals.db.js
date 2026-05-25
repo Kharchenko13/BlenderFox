@@ -15,7 +15,7 @@
 
 function getMedals() {
   const earned = getEarnedMedals();
-  return MEDALS_DATA.map(m => ({ ...m, earned: earned.has(m.id) }));
+  return getMedalsData().map(m => ({ ...m, earned: earned.has(m.id) }));
 }
 
 /* ── Supabase: записать полученную медаль ──

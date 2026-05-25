@@ -36,6 +36,7 @@ function checkAllMedals() {
   if (done >= 5)  checkMedalById('half',       earnedMedals);
   if (done >= 10) checkMedalById('all',        earnedMedals);
 
+  // Используем базовый MODULES (id модулей одинаковые в обоих языках)
   MODULES.forEach(m => {
     if (m.tasks.every(t => completedTasks.has(t.id))) {
       if (m.id === 'intro')      checkMedalById('module1',   earnedMedals);
@@ -46,7 +47,7 @@ function checkAllMedals() {
   });
 
   const savedWorks = getSavedWorks();
-  const allSaved = getAllTasks().every(t => (savedWorks[t.id] || []).length > 0);
+  const allSaved = getAllTasks().every(task => (savedWorks[task.id] || []).length > 0);
   if (allSaved) checkMedalById('detail', earnedMedals);
 
   saveEarnedMedals(earnedMedals);

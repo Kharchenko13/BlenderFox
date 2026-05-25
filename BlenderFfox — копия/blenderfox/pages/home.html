@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BlenderFox — Главная</title>
+<script src="../js/utils/i18n.js"></script>
 <link rel="stylesheet" href="../css/main.css">
 <link rel="stylesheet" href="../css/sidebar.css">
 <link rel="stylesheet" href="../css/home.css">
@@ -20,7 +21,7 @@
     <div class="page-header">
       <div>
         <div class="page-title" id="home-title">Добро пожаловать 👋</div>
-        <div class="page-sub">Продолжай учиться — каждый урок делает тебя лучше</div>
+        <div class="page-sub" data-i18n="home.sub">Продолжай учиться — каждый урок делает тебя лучше</div>
       </div>
     </div>
     <div class="page-body">
@@ -30,33 +31,33 @@
         <div class="welcome-banner-content">
           <div>
             <div class="welcome-text-title" id="welcome-title">Привет от BlenderFox!</div>
-            <div class="welcome-text-sub">Сегодня хороший день чтобы создать что-то крутое.<br>Выбери задание и начни прямо сейчас!</div>
+            <div class="welcome-text-sub" id="welcome-sub">Сегодня хороший день чтобы создать что-то крутое.<br>Выбери задание и начни прямо сейчас!</div>
           </div>
           <div class="welcome-cta">
-            <a href="tasks.html" class="btn-sm">Перейти к заданиям →</a>
+            <a href="tasks.html" class="btn-sm" data-i18n="home.banner.btn">Перейти к заданиям →</a>
           </div>
         </div>
       </div>
 
       <div class="home-grid">
         <div class="stat-card fade-up">
-          <div class="stat-card-label">Заданий выполнено</div>
+          <div class="stat-card-label" data-i18n="home.stat.done">Заданий выполнено</div>
           <div class="stat-card-val" id="stat-done">0</div>
-          <div class="stat-card-desc">из <span id="stat-total">10</span> заданий</div>
+          <div class="stat-card-desc" id="stat-done-desc">из <span id="stat-total">10</span> заданий</div>
         </div>
         <div class="stat-card fade-up">
-          <div class="stat-card-label">Пройдено модулей</div>
+          <div class="stat-card-label" data-i18n="home.stat.modules">Пройдено модулей</div>
           <div class="stat-card-val" id="stat-modules">0</div>
-          <div class="stat-card-desc">из 4 модулей</div>
+          <div class="stat-card-desc" id="stat-modules-desc">из 4 модулей</div>
         </div>
         <div class="stat-card fade-up">
-          <div class="stat-card-label">Медалей получено</div>
+          <div class="stat-card-label" data-i18n="home.stat.medals">Медалей получено</div>
           <div class="stat-card-val" id="stat-medals">0</div>
-          <div class="stat-card-desc" style="cursor:pointer;color:var(--c)" onclick="location.href='medals.html'">Посмотреть все →</div>
+          <div class="stat-card-desc" style="cursor:pointer;color:var(--c)" onclick="location.href='medals.html'" data-i18n="home.stat.see">Посмотреть все →</div>
         </div>
       </div>
 
-      <div class="section-title">Модули курса</div>
+      <div class="section-title" data-i18n="home.modules.title">Модули курса</div>
       <div id="home-modules"></div>
     </div>
   </main>
@@ -64,6 +65,7 @@
 
 <!-- JS: порядок важен — сначала данные, потом логика, потом UI -->
 <script src="../js/utils/data.js"></script>
+<script src="../js/utils/data.kz.js"></script>
 <script src="../js/auth/session.js"></script>
 <script src="../js/auth/auth.js"></script>
 <script src="../js/db/completed.db.js"></script>
@@ -79,9 +81,11 @@
 (async function() {
   const u = checkAuth();
   if (!u) return;
+  applyI18n();
 
-  document.getElementById('home-title').textContent    = `Добро пожаловать, ${u.name} 👋`;
-  document.getElementById('welcome-title').textContent = `Привет, ${u.name}!`;
+  document.getElementById('home-title').textContent    = `${t('home.title')}, ${u.name} 👋`;
+  document.getElementById('welcome-title').textContent = t('home.banner.title');
+  document.getElementById('welcome-sub').innerHTML     = t('home.banner.sub').replace('\n','<br>');
 
   renderSidebar('home');
   initMedalUI();
@@ -92,6 +96,11 @@
   document.getElementById('stat-total').textContent   = stats.total;
   document.getElementById('stat-modules').textContent = stats.modsDone;
   document.getElementById('stat-medals').textContent  = stats.meds;
+
+  // Переводим подписи статистики
+  document.getElementById('stat-done-desc').innerHTML =
+    `${t('home.stat.of')} <span id="stat-total">${stats.total}</span> ${t('home.stat.tasks')}`;
+  document.getElementById('stat-modules-desc').textContent = t('home.stat.of4');
 
   renderHomeModules(getCompletedTasks());
 })();

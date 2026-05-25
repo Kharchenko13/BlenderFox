@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BlenderFox — Задания</title>
+<script src="../js/utils/i18n.js"></script>
 <link rel="stylesheet" href="../css/main.css">
 <link rel="stylesheet" href="../css/sidebar.css">
 <link rel="stylesheet" href="../css/tasks.css">
@@ -19,8 +20,8 @@
   <main class="main">
     <div class="page-header">
       <div>
-        <div class="page-title">Задания по модулям</div>
-        <div class="page-sub">Нажми на задание чтобы открыть инструкцию</div>
+        <div class="page-title" data-i18n="tasks.title">Задания по модулям</div>
+        <div class="page-sub" data-i18n="tasks.sub">Нажми на задание чтобы открыть инструкцию</div>
       </div>
     </div>
     <div class="page-body" id="tasks-body"></div>
@@ -28,6 +29,7 @@
 </div>
 
 <script src="../js/utils/data.js"></script>
+<script src="../js/utils/data.kz.js"></script>
 <script src="../js/auth/session.js"></script>
 <script src="../js/auth/auth.js"></script>
 <script src="../js/db/completed.db.js"></script>
@@ -42,6 +44,7 @@
 <script>
 (async function() {
   checkAuth();
+  applyI18n();
   renderSidebar('tasks');
   renderTaskPanel();
   initMedalUI();          // попап медали + toast
@@ -53,7 +56,7 @@ function onTaskCompleted() { renderTasks(); }
 
 function renderTasks() {
   const completedTasks = getCompletedTasks();
-  document.getElementById('tasks-body').innerHTML = MODULES.map(m => `
+  document.getElementById('tasks-body').innerHTML = getModules().map(m => `
     <div class="module-block fade-up">
       <div class="module-header">
         <div class="module-icon">${m.icon}</div>

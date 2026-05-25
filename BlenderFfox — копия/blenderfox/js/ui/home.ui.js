@@ -5,7 +5,7 @@
 function renderHomeModules(completedTasks) {
   const el = document.getElementById('home-modules');
   if (!el) return;
-  el.innerHTML = MODULES.map(m => {
+  el.innerHTML = getModules().map(m => {
     const done = m.tasks.filter(t => completedTasks.has(t.id)).length;
     const pct  = Math.round(done / m.tasks.length * 100);
     return `
@@ -13,7 +13,7 @@ function renderHomeModules(completedTasks) {
       <div class="home-module-card-icon">${m.icon}</div>
       <div class="home-module-card-info">
         <div class="home-module-card-title">${m.title}</div>
-        <div class="home-module-card-sub">${done} / ${m.tasks.length} заданий выполнено</div>
+        <div class="home-module-card-sub">${done} / ${m.tasks.length} ${t('home.module.done')}</div>
       </div>
       <div class="home-module-progress">
         <div class="home-module-progress-bar">

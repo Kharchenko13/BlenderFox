@@ -22,7 +22,7 @@
 .saved-card-meta  { font-size: 11px; color: var(--text-lt); }
 .saved-card-date  { font-size: 10px; color: var(--stone); margin-top: 4px; }
 
-/* Цвета карточек — тёплая палитра */
+/* Цвета карточек */
 .sc-orange { background: linear-gradient(135deg, #E07B54, #EFA07A); }
 .sc-amber  { background: linear-gradient(135deg, #D97706, #F59E0B); }
 .sc-warm   { background: linear-gradient(135deg, #C5633D, #E07B54); }
@@ -31,6 +31,10 @@
 .sc-sand   { background: linear-gradient(135deg, #B5A393, #D4C4B5); }
 .sc-rose   { background: linear-gradient(135deg, #C2410C, #EA580C); }
 .sc-cream  { background: linear-gradient(135deg, #FAE3D4, #FDF0E8); }
+
+/* Карточка с фото */
+.saved-card-thumb.has-photo { background: #f0f0f0; }
+.saved-card-photo { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
 
 .upload-card {
   background: var(--c-bg); border: 2px dashed var(--c-lt); border-radius: var(--r);
@@ -43,9 +47,225 @@
 .upload-txt { font-size: 11px; font-weight: 700; color: var(--c); text-align: center; line-height: 1.4; }
 
 .saving-toast {
-  position: fixed; bottom: 24px; right: 24px; z-index: 999;
+  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
   background: var(--text); color: #fff; padding: 12px 20px; border-radius: 14px;
   font-size: 13px; font-weight: 700; opacity: 0; transform: translateY(10px);
   transition: all .3s; pointer-events: none;
 }
 .saving-toast.show { opacity: 1; transform: translateY(0); }
+
+/* ══════════════════════════════════════
+   SAVED WORKS — МОДАЛКИ (sw-*)
+   Независимые стили, не зависят от profile.css
+══════════════════════════════════════ */
+
+/* Фон-оверлей */
+.sw-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .45);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+}
+.sw-backdrop.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Само окно */
+.sw-modal {
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 460px;
+  padding: 28px 28px 24px;
+  box-shadow: 0 24px 80px rgba(0,0,0,.25);
+  transform: scale(.94) translateY(10px);
+  transition: transform .25s;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.sw-backdrop.open .sw-modal {
+  transform: scale(1) translateY(0);
+}
+
+/* Заголовок */
+.sw-modal-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+/* Чип с названием задания */
+.sw-task-chip {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c);
+  background: var(--c-bg);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+/* Зона загрузки фото */
+.sw-photo-area {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 2px dashed var(--c-lt);
+  border-radius: 12px;
+  background: var(--warm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .2s, background .2s;
+}
+.sw-photo-area:hover { border-color: var(--c); background: var(--c-bg); }
+
+.sw-photo-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+}
+.sw-photo-placeholder svg {
+  width: 44px; height: 44px;
+  stroke: var(--c-lt); fill: none; stroke-width: 1.5;
+}
+.sw-photo-placeholder span {
+  font-size: 12px; font-weight: 600;
+  color: var(--text-lt); text-align: center;
+}
+
+.sw-photo-preview {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+.sw-photo-remove {
+  position: absolute; top: 8px; right: 8px;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(0,0,0,.55); color: #fff;
+  border: none; cursor: pointer; font-size: 14px;
+  display: none;
+  align-items: center; justify-content: center;
+  z-index: 5;
+  transition: background .15s;
+}
+.sw-photo-remove:hover { background: rgba(211,47,47,.9); }
+
+/* Поля формы */
+.sw-form-group { margin-top: 16px; }
+.sw-form-label {
+  display: block;
+  font-size: 11px; font-weight: 800;
+  color: var(--text-lt);
+  letter-spacing: .07em; text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.sw-form-input {
+  width: 100%; padding: 11px 14px;
+  border: 2px solid var(--border); border-radius: 10px;
+  font-family: var(--font); font-size: 14px; color: var(--text);
+  background: #fff; outline: none;
+  transition: border-color .2s;
+  box-sizing: border-box;
+}
+.sw-form-input:focus { border-color: var(--c); }
+
+/* Сообщения */
+.sw-error   { font-size: 12px; color: #D32F2F; font-weight: 700; margin-top: 10px; min-height: 16px; }
+.sw-success { font-size: 12px; color: var(--green); font-weight: 700; margin-top: 10px; min-height: 16px; }
+
+/* Кнопки */
+.sw-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+.sw-btn-cancel {
+  padding: 12px 20px;
+  border: none; border-radius: 10px;
+  background: var(--warm); color: var(--text-md);
+  font-family: var(--font); font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: background .15s;
+}
+.sw-btn-cancel:hover { background: var(--border); }
+
+.sw-btn-save {
+  flex: 1; padding: 12px;
+  border: none; border-radius: 10px;
+  background: linear-gradient(135deg, var(--c), var(--c-lt));
+  color: #fff;
+  font-family: var(--font); font-size: 14px; font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(224,123,84,.3);
+  transition: all .2s;
+}
+.sw-btn-save:hover   { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(224,123,84,.4); }
+.sw-btn-save:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+.sw-btn-delete {
+  flex: 1; padding: 12px;
+  border: none; border-radius: 10px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+  font-family: var(--font); font-size: 14px; font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(239,68,68,.3);
+  transition: all .2s;
+}
+.sw-btn-delete:hover { transform: translateY(-1px); }
+
+/* ── Модалка просмотра работы ── */
+.sw-detail-modal {
+  max-width: 520px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.sw-detail-photo-wrap {
+  width: 100%;
+  min-height: 180px;
+  max-height: 340px;
+  background: var(--warm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.sw-detail-photo {
+  width: 100%;
+  max-height: 340px;
+  object-fit: cover;
+  display: block;
+}
+.sw-detail-emoji {
+  font-size: 80px;
+  padding: 36px;
+}
+
+.sw-detail-body {
+  padding: 20px 24px 8px;
+}
+.sw-detail-title {
+  font-family: var(--font-display);
+  font-size: 20px; font-weight: 800;
+  color: var(--text); margin-bottom: 6px;
+}
+.sw-detail-meta { font-size: 12px; color: var(--c); font-weight: 700; margin-bottom: 4px; }
+.sw-detail-date { font-size: 11px; color: var(--text-lt); }

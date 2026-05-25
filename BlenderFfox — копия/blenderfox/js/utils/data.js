@@ -140,3 +140,20 @@ const MEDALS_DATA = [
 ];
 
 function getAllTasks() { return MODULES.flatMap(m => m.tasks); }
+
+/* ── Геттеры с учётом языка ── */
+function getModules() {
+  if (typeof getLang === 'function' && getLang() === 'kz' && typeof MODULES_KZ !== 'undefined') {
+    return MODULES_KZ;
+  }
+  return MODULES;
+}
+
+function getMedalsData() {
+  if (typeof getLang === 'function' && getLang() === 'kz' && typeof MEDALS_DATA_KZ !== 'undefined') {
+    return MEDALS_DATA_KZ;
+  }
+  return MEDALS_DATA;
+}
+
+function getAllTasksI18n() { return getModules().flatMap(m => m.tasks); }

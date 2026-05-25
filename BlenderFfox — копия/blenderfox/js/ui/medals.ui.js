@@ -17,8 +17,8 @@ function initMedalUI() {
           <div class="medal-popup-name" id="mp-name">Медаль</div>
           <div class="medal-popup-status" id="mp-status">Получена</div>
           <div class="medal-popup-desc" id="mp-desc"></div>
-          <div class="medal-popup-how"><strong>Как получить:</strong><span id="mp-how"></span></div>
-          <button class="btn-close" onclick="closeMedalPopup()">Закрыть</button>
+          <div class="medal-popup-how"><strong id="mp-how-label">${t('medals.popup.how')}</strong><span id="mp-how"></span></div>
+          <button class="btn-close" onclick="closeMedalPopup()" data-i18n="medals.popup.close">${t('medals.popup.close')}</button>
         </div>
       </div>
     `);
@@ -29,7 +29,7 @@ function initMedalUI() {
     document.body.insertAdjacentHTML('beforeend', `
       <div class="medal-toast" id="medal-toast">
         <div class="medal-toast-text">
-          <div class="medal-toast-label">🏅 Новая медаль!</div>
+          <div class="medal-toast-label" id="toast-medal-label">${t('medals.toast.label')}</div>
           <div class="medal-toast-name" id="toast-medal-name">—</div>
           <div class="medal-toast-desc" id="toast-medal-desc">—</div>
         </div>
@@ -47,12 +47,14 @@ function showMedalToast(medalId) {
   // Убедимся что toast существует (на случай если initMedalUI ещё не вызван)
   if (!document.getElementById('medal-toast')) initMedalUI();
 
-  const medal    = MEDALS_DATA.find(m => m.id === medalId);
+  const medal    = getMedalsData().find(m => m.id === medalId);
   const toast = document.getElementById('medal-toast');
   if (!medal || !toast) return;
 
   document.getElementById('toast-medal-name').textContent = `${medal.icon} ${medal.name}`;
   document.getElementById('toast-medal-desc').textContent = medal.desc;
+  const toastLabel = document.getElementById('toast-medal-label');
+  if (toastLabel) toastLabel.textContent = t('medals.toast.label');
 
   // Сбросить предыдущий таймер
   if (_toastTimer) {
@@ -92,7 +94,7 @@ function renderMedals() {
       ${m.earned ? '<div class="medal-earned-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>' : ''}
       <div class="medal-icon">${m.icon}</div>
       <div class="medal-name">${m.name}</div>
-      <div class="medal-cond">${m.earned ? '✅ Получена' : 'Не получена'}</div>
+      <div class="medal-cond">${m.earned ? t('medals.status.earned') : t('medals.status.locked')}</div>
     </div>`).join('');
 }
 
@@ -105,8 +107,12 @@ function openMedalPopup(id) {
   document.getElementById('mp-name').textContent = m.name;
   document.getElementById('mp-desc').textContent = m.desc;
   document.getElementById('mp-how').textContent  = m.how;
+  const howLabel = document.getElementById('mp-how-label');
+  if (howLabel) howLabel.textContent = t('medals.popup.how');
+  const closeBtn = document.querySelector('#medal-backdrop .btn-close');
+  if (closeBtn) closeBtn.textContent = t('medals.popup.close');
   const st = document.getElementById('mp-status');
-  st.textContent = m.earned ? '✅ Получена' : '🔒 Не получена';
+  st.textContent = m.earned ? t('medals.popup.status.earned') : t('medals.popup.status.locked');
   st.className   = 'medal-popup-status ' + (m.earned ? 'earned' : 'locked');
   document.getElementById('medal-backdrop').classList.add('open');
 }
