@@ -4,39 +4,189 @@
 
 html, body { height: 100%; overflow: hidden; }
 
+/* ── Экран — фон на весь экран ── */
 .auth-screen {
-  position: fixed; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(135deg, #1a0f08 0%, #2a1508 50%, #1a0f08 100%);
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* фон прямо здесь, без доп. элементов */
+  background-image: url('../assets/registration.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
+
+/* тёмный оверлей */
 .auth-screen::before {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background:
-    radial-gradient(ellipse 60% 50% at 30% 40%, rgba(224,123,84,.15) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 60% at 80% 70%, rgba(224,123,84,.08) 0%, transparent 60%);
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.30);
+  z-index: 0;
 }
+
+/* ── Карточка ── */
 .auth-box {
-  background: #fff; border-radius: 28px; width: 420px; padding: 44px;
-  box-shadow: 0 40px 100px rgba(0,0,0,.55); position: relative; z-index: 1;
+  position: relative;
+  z-index: 1;
+  width: 400px;
+  background: #ffffff;
+  border-radius: 28px;
+  padding: 40px 44px 36px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+
+  /* анимация высоты при переключении форм */
+  transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
-.auth-brand { text-align: center; margin-bottom: 32px; }
-.auth-brand-name { font-family: var(--font-display); font-size: 34px; font-weight: 800; color: var(--text); letter-spacing: -1px; }
+
+/* ── Бренд ── */
+.auth-brand {
+  text-align: center;
+  margin-bottom: 22px;
+}
+.auth-brand-name {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -1px;
+}
 .auth-brand-name span { color: var(--c); }
-.auth-brand-sub { font-size: 13px; color: var(--text-lt); margin-top: 4px; }
-
-.auth-tabs { display: flex; background: var(--warm); border-radius: 12px; padding: 3px; margin-bottom: 24px; }
-.auth-tab { flex: 1; padding: 9px; border: none; background: transparent; font-family: var(--font); font-size: 14px; font-weight: 700; color: var(--text-lt); border-radius: 10px; cursor: pointer; transition: all .2s; }
-.auth-tab.active { background: #fff; color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,.08); }
-
-.form-group { margin-bottom: 14px; }
-.form-label { font-size: 11px; font-weight: 800; color: var(--text-lt); letter-spacing: .08em; text-transform: uppercase; display: block; margin-bottom: 6px; }
-.form-input {
-  width: 100%; padding: 12px 14px; border: 2px solid var(--border); border-radius: 12px;
-  font-family: var(--font); font-size: 14px; color: var(--text);
-  background: #fff; outline: none; transition: border-color .2s;
+.auth-brand-sub {
+  font-size: 13px;
+  color: var(--text-lt);
+  margin-top: 5px;
+  transition: opacity 0.3s ease;
 }
-.form-input:focus { border-color: var(--c); }
-.form-input::placeholder { color: var(--stone); }
 
+/* ── Табы ── */
+.auth-tabs {
+  display: flex;
+  margin-bottom: 22px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+}
+.auth-tab {
+  flex: 1;
+  padding: 10px 0;
+  border: none;
+  background: var(--warm);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-lt);
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.auth-tab:first-child {
+  border-right: 1.5px solid var(--border);
+}
+.auth-tab.active {
+  background: #fff;
+  color: var(--text);
+}
+
+/* ── Обёртка форм — относительная, чтобы absolute форма позиционировалась внутри ── */
+.auth-forms-wrap {
+  position: relative;
+}
+
+/* ── Обе формы ── */
+.auth-form {
+  width: 100%;
+  transition:
+    opacity   0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+/* Форма входа — видима */
+#form-login {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  pointer-events: auto;
+  position: relative;
+}
+
+/* Форма регистрации — скрыта, чуть меньше масштаб */
+#form-reg {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  opacity: 0;
+  transform: translateX(30px) scale(0.96);
+  pointer-events: none;
+}
+
+/* Когда активна регистрация */
+.auth-box.show-reg #form-login {
+  opacity: 0;
+  transform: translateX(-30px) scale(0.96);
+  pointer-events: none;
+  position: absolute;
+  top: 0; left: 0; right: 0;
+}
+.auth-box.show-reg #form-reg {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  pointer-events: auto;
+  position: relative;
+}
+
+/* ── Поля ── */
+.form-group { margin-bottom: 13px; }
+.form-label {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-lt);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+}
+.form-input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--text);
+  background: #fff;
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  box-sizing: border-box;
+}
+.form-input:focus {
+  border-color: var(--c);
+  box-shadow: 0 0 0 3px rgba(224, 123, 84, 0.15);
+}
+.form-input::placeholder { color: #c0b0a5; }
+
+/* ── Кнопка — по центру, не на всю ширину ── */
+.btn-primary {
+  display: block;
+  margin: 16px auto 0;
+  width: 82%;
+  padding: 13px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--c), var(--c-lt));
+  color: #fff;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 6px 20px rgba(224, 123, 84, 0.4);
+}
+.btn-primary:hover  { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(224,123,84,.45); }
+.btn-primary:active { transform: scale(.98); }
+.btn-primary:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+/* ── Сообщения ── */
 .auth-error   { color: #D32F2F; font-size: 12px; font-weight: 700; margin-top: 10px; text-align: center; min-height: 18px; }
 .auth-success { color: #3DAA52; font-size: 12px; font-weight: 700; margin-top: 10px; text-align: center; min-height: 18px; }
