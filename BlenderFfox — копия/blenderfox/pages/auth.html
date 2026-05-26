@@ -13,92 +13,164 @@
 <script src="../js/config/supabase.js"></script>
 
 <div class="auth-screen">
-  <div class="auth-box">
+
+  <div class="auth-box" id="auth-box">
+
     <div class="auth-brand">
       <div class="auth-brand-name">Blender<span>Fox</span></div>
-      <div class="auth-brand-sub">Учись 3D-моделированию — шаг за шагом</div>
+      <div class="auth-brand-sub" id="auth-brand-sub">Учись 3D-моделированию — шаг за шагом</div>
     </div>
 
     <div class="auth-tabs">
-      <button class="auth-tab active" onclick="switchTab('login',this)">Войти</button>
-      <button class="auth-tab"        onclick="switchTab('reg',this)">Регистрация</button>
+      <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Войти</button>
+      <button class="auth-tab"        id="tab-reg"   onclick="switchTab('reg')">Регистрация</button>
     </div>
 
-    <div id="form-login">
-      <div class="form-group">
-        <label class="form-label">Email</label>
-        <input class="form-input" id="login-email" type="email" placeholder="fox@blender.ru">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Пароль</label>
-        <input class="form-input" id="login-pass" type="password" placeholder="••••••••">
-      </div>
-      <button class="btn-primary" id="btn-login" onclick="handleLogin()">Войти в платформу →</button>
-    </div>
+    <div class="auth-forms-wrap" id="forms-wrap">
 
-    <div id="form-reg" style="display:none">
-      <div class="form-group">
-        <label class="form-label">Имя</label>
-        <input class="form-input" id="reg-name" type="text" placeholder="Введите имя">
+      <!-- Форма входа -->
+      <div class="auth-form" id="form-login">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" id="login-email" type="email" placeholder="fox@blender.ru">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Пароль</label>
+          <input class="form-input" id="login-pass" type="password" placeholder="••••••••">
+        </div>
+        <button class="btn-primary" id="btn-login" onclick="handleLogin()">Войти в платформу →</button>
+        <div class="auth-error"   id="auth-error"></div>
+        <div class="auth-success" id="auth-success"></div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Email</label>
-        <input class="form-input" id="reg-email" type="email" placeholder="Введите Email">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Пароль</label>
-        <input class="form-input" id="reg-pass" type="password" placeholder="Минимум 6 символов">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Повтор пароля</label>
-        <input class="form-input" id="reg-confirm" type="password" placeholder="••••••••">
-      </div>
-      <button class="btn-primary" id="btn-reg" onclick="handleRegister()">Создать аккаунт →</button>
-    </div>
 
-    <div class="auth-error"   id="auth-error"></div>
-    <div class="auth-success" id="auth-success"></div>
-  </div>
-</div>
+      <!-- Форма регистрации -->
+      <div class="auth-form" id="form-reg">
+        <div class="form-group">
+          <label class="form-label">Имя</label>
+          <input class="form-input" id="reg-name" type="text" placeholder="Введите имя">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" id="reg-email" type="email" placeholder="Введите Email">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Пароль</label>
+          <input class="form-input" id="reg-pass" type="password" placeholder="Минимум 6 символов">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Повтор пароля</label>
+          <input class="form-input" id="reg-confirm" type="password" placeholder="••••••••">
+        </div>
+        <button class="btn-primary" id="btn-reg" onclick="handleRegister()">Создать аккаунт →</button>
+        <div class="auth-error"   id="auth-error-reg"></div>
+        <div class="auth-success" id="auth-success-reg"></div>
+      </div>
+
+    </div><!-- /forms-wrap -->
+
+  </div><!-- /auth-box -->
+
+</div><!-- /auth-screen -->
 
 <script src="../js/auth/session.js"></script>
 <script src="../js/auth/auth.js"></script>
 <script>
-// Уже залогинен — сразу на главную
 (function() { if (localStorage.getItem('lc_user')) window.location.replace('home.html'); })();
 
-function switchTab(tab, el) {
-  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('form-login').style.display = tab === 'login' ? '' : 'none';
-  document.getElementById('form-reg').style.display   = tab === 'reg'   ? '' : 'none';
-  document.getElementById('auth-error').textContent   = '';
-  document.getElementById('auth-success').textContent = '';
+let currentTab = 'login';
+
+const subs = {
+  login: 'Учись 3D-моделированию — шаг за шагом',
+  reg:   'Создай аккаунт и начни обучение'
+};
+
+// Устанавливаем начальную высоту карточки после загрузки
+window.addEventListener('DOMContentLoaded', function() {
+  setBoxHeight('login');
+});
+
+function setBoxHeight(tab) {
+  const box      = document.getElementById('auth-box');
+  const wrap     = document.getElementById('forms-wrap');
+  const formEl   = document.getElementById(tab === 'login' ? 'form-login' : 'form-reg');
+
+  // Временно делаем форму видимой для измерения
+  const wasHidden = formEl.style.visibility === 'hidden';
+  formEl.style.visibility = 'hidden';
+  formEl.style.position   = 'relative';
+  formEl.style.opacity    = '1';
+
+  const formH = formEl.scrollHeight;
+
+  formEl.style.visibility = '';
+  formEl.style.position   = '';
+  formEl.style.opacity    = '';
+
+  // Высота = паддинги карточки + бренд + табы + форма
+  const brand  = box.querySelector('.auth-brand').offsetHeight;
+  const tabs   = box.querySelector('.auth-tabs').offsetHeight;
+  const padTop = 40, padBot = 36;
+  const brandMb = 22, tabsMb = 22;
+
+  const total = padTop + brand + brandMb + tabs + tabsMb + formH + padBot;
+  box.style.height = total + 'px';
 }
 
-function showError(msg)   { document.getElementById('auth-error').textContent = msg;   document.getElementById('auth-success').textContent = ''; }
-function showSuccess(msg) { document.getElementById('auth-success').textContent = msg; document.getElementById('auth-error').textContent = ''; }
+function switchTab(tab) {
+  if (tab === currentTab) return;
+  currentTab = tab;
+
+  document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+  document.getElementById('tab-reg').classList.toggle('active',   tab === 'reg');
+  document.getElementById('auth-brand-sub').textContent = subs[tab];
+
+  // Сначала обновляем высоту (карточка плавно растягивается/сжимается)
+  setBoxHeight(tab);
+
+  // Затем переключаем класс для анимации форм
+  const box = document.getElementById('auth-box');
+  if (tab === 'reg') {
+    box.classList.add('show-reg');
+  } else {
+    box.classList.remove('show-reg');
+  }
+
+  ['auth-error','auth-success','auth-error-reg','auth-success-reg'].forEach(id => {
+    document.getElementById(id).textContent = '';
+  });
+}
+
+function showError(msg, isReg) {
+  document.getElementById(isReg ? 'auth-error-reg'   : 'auth-error').textContent   = msg;
+  document.getElementById(isReg ? 'auth-success-reg' : 'auth-success').textContent = '';
+}
+function showSuccess(msg, isReg) {
+  document.getElementById(isReg ? 'auth-success-reg' : 'auth-success').textContent = msg;
+  document.getElementById(isReg ? 'auth-error-reg'   : 'auth-error').textContent   = '';
+}
 
 function setLoading(btnId, loading) {
   const btn = document.getElementById(btnId);
   btn.disabled = loading;
-  btn.textContent = loading ? 'Загрузка...' : (btnId === 'btn-login' ? 'Войти в платформу →' : 'Создать аккаунт →');
+  btn.textContent = loading
+    ? 'Загрузка...'
+    : (btnId === 'btn-login' ? 'Войти в платформу →' : 'Создать аккаунт →');
 }
 
 async function handleLogin() {
   const email = document.getElementById('login-email').value.trim();
   const pass  = document.getElementById('login-pass').value;
-  if (!email || !pass) { showError('Заполни все поля'); return; }
+  if (!email || !pass) { showError('Заполни все поля', false); return; }
   setLoading('btn-login', true);
   try {
     await doLogin(email, pass);
     window.location.replace('home.html');
   } catch(e) {
     const msg = e.message;
-    if (msg === 'Invalid login credentials')   showError('Неверный email или пароль');
-    else if (msg.includes('Email not confirmed')) showError('Подтверди email — проверь почту');
-    else if (msg.includes('rate limit'))          showError('Слишком много попыток, подожди немного');
-    else showError(msg);
+    if (msg === 'Invalid login credentials')       showError('Неверный email или пароль', false);
+    else if (msg.includes('Email not confirmed'))  showError('Подтверди email — проверь почту', false);
+    else if (msg.includes('rate limit'))           showError('Слишком много попыток, подожди немного', false);
+    else showError(msg, false);
     setLoading('btn-login', false);
   }
 }
@@ -108,17 +180,17 @@ async function handleRegister() {
   const email   = document.getElementById('reg-email').value.trim();
   const pass    = document.getElementById('reg-pass').value;
   const confirm = document.getElementById('reg-confirm').value;
-  if (!name || !email || !pass || !confirm) { showError('Заполни все поля'); return; }
-  if (!/\S+@\S+\.\S+/.test(email))          { showError('Некорректный email'); return; }
-  if (pass.length < 6)                       { showError('Пароль — минимум 6 символов'); return; }
-  if (pass !== confirm)                      { showError('Пароли не совпадают'); return; }
+  if (!name || !email || !pass || !confirm) { showError('Заполни все поля', true); return; }
+  if (!/\S+@\S+\.\S+/.test(email))          { showError('Некорректный email', true); return; }
+  if (pass.length < 6)                       { showError('Пароль — минимум 6 символов', true); return; }
+  if (pass !== confirm)                      { showError('Пароли не совпадают', true); return; }
   setLoading('btn-reg', true);
   try {
     await doRegister(name, email, pass);
-    showSuccess('Аккаунт создан! Перенаправляем...');
+    showSuccess('Аккаунт создан! Перенаправляем...', true);
     setTimeout(() => window.location.replace('home.html'), 800);
   } catch(e) {
-    showError(e.message.includes('already registered') ? 'Этот email уже зарегистрирован' : e.message);
+    showError(e.message.includes('already registered') ? 'Этот email уже зарегистрирован' : e.message, true);
     setLoading('btn-reg', false);
   }
 }
