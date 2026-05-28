@@ -11,7 +11,7 @@ function renderProfile() {
   // Аватар
   const avatarEl = document.getElementById('p-avatar-letter');
   if (u.avatar_url) {
-    avatarEl.innerHTML = `<img src="${u.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    avatarEl.innerHTML = `<img src="${u.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">`;
   } else {
     avatarEl.textContent = u.avatar || u.name[0].toUpperCase();
   }
@@ -127,7 +127,7 @@ function openEditProfile() {
 
   const preview = document.getElementById('edit-avatar-preview');
   if (u.avatar_url) {
-    preview.innerHTML = `<img src="${u.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    preview.innerHTML = `<img src="${u.avatar_url}" style="width:100%;height:100%;object-fit:cover;display:block;">`;
   } else {
     preview.innerHTML = `<span id="edit-avatar-letter">${u.avatar || u.name[0].toUpperCase()}</span>`;
   }
@@ -151,7 +151,7 @@ function onAvatarSelected(input) {
   const reader = new FileReader();
   reader.onload = (ev) => {
     document.getElementById('edit-avatar-preview').innerHTML =
-      `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+      `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;display:block;">`;
   };
   reader.readAsDataURL(file);
 }
