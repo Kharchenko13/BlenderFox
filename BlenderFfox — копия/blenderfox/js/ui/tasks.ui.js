@@ -88,9 +88,57 @@ function completeTask(id) {
   const u = getUser();
   if (u && typeof sbCompleteTask === 'function') sbCompleteTask(u.id, id).catch(() => {});
 
+  // Повышение уровня: каждые 2 выполненных задания +1 уровень (макс 5)
+  let levelUp = false;
+  let newLevel = 1;
+  if (u) {
+    newLevel = Math.min(5, Math.floor(completedTasks.size / 2) + 1);
+    if (newLevel > (u.level || 1)) {
+      const updated = { ...u, level: newLevel };
+      localStorage.setItem('lc_user', JSON.stringify(updated));
+      if (typeof sbUpdateProfile === 'function') {
+        sbUpdateProfile(u.id, { level: newLevel }).catch(() => {});
+      }
+      levelUp = true;
+    }
+  }
+
+  // Сначала медали, потом через 1 сек после последней медали — уровень
   checkAllMedals();
+
+  if (levelUp) {
+    // Ждём пока закончится медальный тост + 1 секунда
+    const medalEndsIn = (typeof getMedalToastEndsIn === 'function') ? getMedalToastEndsIn() : 0;
+    const delay = medalEndsIn > 0 ? medalEndsIn + 1000 : 1000;
+    setTimeout(() => _showLevelUpToast(newLevel), delay);
+  }
+
   closeTask();
   if (typeof onTaskCompleted === 'function') onTaskCompleted();
+}
+
+function _showLevelUpToast(level) {
+  const existing = document.getElementById('levelup-toast');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.id = 'levelup-toast';
+  toast.innerHTML = `
+    <img class="levelup-fox" src="../assets/fox_with_tongue.png" alt="fox">
+    <div class="levelup-text">Уровень повышен до <strong>${level}</strong>!</div>
+  `;
+  toast.className = 'levelup-toast';
+  document.body.appendChild(toast);
+
+  // Анимация появления
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => toast.classList.add('levelup-toast--show'));
+  });
+
+  setTimeout(() => {
+    toast.classList.remove('levelup-toast--show');
+    setTimeout(() => toast.remove(), 500);
+  }, 3500);
 }
 
 // openMedalPopup и closeMedalPopup определены в medals.ui.js
