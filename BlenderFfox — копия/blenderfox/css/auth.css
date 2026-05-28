@@ -11,20 +11,21 @@ html, body { height: 100%; overflow: hidden; }
   display: flex;
   align-items: center;
   justify-content: center;
-  /* фон прямо здесь, без доп. элементов */
+  background-color: #1a0f08; /* fallback если картинка не загрузилась */
   background-image: url('../assets/registration.jpg');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
 }
 
-/* тёмный оверлей */
+/* тёмный оверлей — только поверх фона, не поверх карточки */
 .auth-screen::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.30);
+  background: rgba(0, 0, 0, 0.32);
   z-index: 0;
+  pointer-events: none;
 }
 
 /* ── Карточка ── */
