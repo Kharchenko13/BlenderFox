@@ -15,7 +15,11 @@ function renderSidebar(activePage) {
   ];
 
   const stats  = getStats();
-  const avatar = user.avatar || user.name[0].toUpperCase();
+
+  // Аватар: фото или буква
+  const avatarHtml = user.avatar_url
+    ? `<img src="${user.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">`
+    : (user.avatar || user.name[0].toUpperCase());
 
   const sections = [
     { labelKey: 'nav.sec.main',        items: ['home'] },
@@ -46,7 +50,7 @@ function renderSidebar(activePage) {
     </div>
     <nav class="sidebar-nav">${navHtml}</nav>
     <div class="sidebar-user">
-      <div class="sidebar-avatar">${avatar}</div>
+      <div class="sidebar-avatar">${avatarHtml}</div>
       <div class="sidebar-user-info">
         <div class="sidebar-user-name">${user.name}</div>
         <div class="sidebar-user-level">${t('sidebar.level')} ${user.level || 1}</div>
