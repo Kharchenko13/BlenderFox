@@ -107,3 +107,55 @@
 }
 
 /* Прогресс-бар убран по запросу */
+
+/* ── Level-up toast ── */
+.levelup-toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(40px) scale(0.92);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  background: #E07B54;
+  border-radius: 60px;
+  /* слева место под лису, справа паддинг */
+  padding: 14px 40px 14px 130px;
+  box-shadow: 0 12px 40px rgba(224, 123, 84, 0.55);
+  min-width: 340px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s cubic-bezier(.32,.72,0,1),
+              transform 0.45s cubic-bezier(.32,.72,0,1);
+  overflow: visible;
+}
+.levelup-toast--show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+/* Лиса — большая, торчит слева и вверх как на скриншоте */
+.levelup-fox {
+  position: absolute;
+  left: -10px;
+  bottom: -2px;
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  object-position: bottom center;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,.15));
+}
+
+.levelup-text {
+  font-family: var(--font);
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  white-space: nowrap;
+  text-shadow: 0 1px 4px rgba(0,0,0,.15);
+}
+.levelup-text strong {
+  font-size: 22px;
+  font-weight: 900;
+}
