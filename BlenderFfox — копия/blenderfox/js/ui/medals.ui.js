@@ -42,6 +42,7 @@ function initMedalUI() {
 
 /* ── Toast при получении медали ── */
 let _toastTimer = null;
+let _lastMedalShownAt = 0; // timestamp когда последний раз показали медаль
 
 function showMedalToast(medalId) {
   // Убедимся что toast существует (на случай если initMedalUI ещё не вызван)
@@ -66,10 +67,20 @@ function showMedalToast(medalId) {
     toast.classList.add('show');
   }, 50);
 
+  _lastMedalShownAt = Date.now();
+
   _toastTimer = setTimeout(() => {
     toast.classList.remove('show');
     _toastTimer = null;
   }, TOAST_DURATION);
+}
+
+/* Возвращает через сколько мс закончится текущий медальный тост */
+function getMedalToastEndsIn() {
+  if (!_lastMedalShownAt) return 0;
+  const elapsed = Date.now() - _lastMedalShownAt;
+  const remaining = TOAST_DURATION - elapsed;
+  return remaining > 0 ? remaining : 0;
 }
 
 /* ── Рендер сетки медалей ── */
