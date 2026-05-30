@@ -11,9 +11,9 @@ const MODULES = [
         id: 0, title: 'Знакомство с интерфейсом', level: 'Начинающий', color: '#4CAF50', bg: '#E8F5E9', emoji: '🖥️',
         desc: 'Изучи основы интерфейса Blender: как устроены рабочие области, панели, инструменты и навигация в 3D-пространстве.',
         steps: [
-          { title: 'Запусти Blender', desc: 'Открой Blender и выбери General при старте. Изучи основные 3 зоны: 3D Viewport, Timeline, Properties.', tip: 'Shortcut: Middle Mouse — вращение сцены, Shift+Middle Mouse — перемещение' },
-          { title: 'Навигация в 3D Viewport', desc: 'Колёсиком — зум, Ctrl+0-9 (Numpad) — стандартные виды. Нажми N, чтобы открыть боковую панель.', tip: 'Numpad 1 = вид спереди, Numpad 3 = вид справа, Numpad 7 = вид сверху' },
-          { title: 'Изучи панель Properties', desc: 'Справа находятся вкладки: Render, Object, Modifier, Material и другие. Пощёлкай по ним.', tip: 'Каждая иконка в Properties — это отдельный раздел настроек' },
+          { title: 'Запусти Blender', desc: 'Открой Blender и выбери General при старте. Изучи основные 3 зоны: 3D Viewport, Timeline, Properties.', tip: 'Shortcut: Middle Mouse — вращение сцены, Shift+Middle Mouse — перемещение', img: '../Фото для уроков/Знакомство с Интерфейсом/Знакомство с интерфейсом №1.png' },
+          { title: 'Навигация в 3D Viewport', desc: 'Колёсиком — зум, Ctrl+0-9 (Numpad) — стандартные виды. Нажми N, чтобы открыть боковую панель.', tip: 'Numpad 1 = вид спереди, Numpad 3 = вид справа, Numpad 7 = вид сверху', img: '../Фото для уроков/Знакомство с Интерфейсом/Знакомство с интерфейсом №2.png' },
+          { title: 'Изучи панель Properties', desc: 'Справа находятся вкладки: Render, Object, Modifier, Material и другие. Пощёлкай по ним.', tip: 'Каждая иконка в Properties — это отдельный раздел настроек', img: '../Фото для уроков/Знакомство с Интерфейсом/Знакомство с интерфейсом №3.png' },
           { title: 'Перемести куб', desc: 'Нажми G (Grab) и подвигай куб мышью. Нажми Enter для подтверждения, Escape для отмены.', tip: 'G X — двигать только по оси X. G Y — по Y. G Z — по Z' },
         ]
       },
@@ -21,8 +21,8 @@ const MODULES = [
         id: 1, title: 'Базовое моделирование', level: 'Начинающий', color: '#4CAF50', bg: '#E8F5E9', emoji: '🟢',
         desc: 'Создай свою первую 3D-модель в Blender. Изучи основные инструменты трансформации и работу с мешем.',
         steps: [
-          { title: 'Удали куб и добавь сферу', desc: 'Нажми X → Delete чтобы удалить куб. Затем Shift+A → Mesh → UV Sphere.', tip: 'Можно менять количество сегментов сферы прямо после добавления (внизу слева появится меню)' },
-          { title: 'Войди в режим редактирования', desc: 'Нажми Tab для переключения в Edit Mode. Ты увидишь вершины, рёбра и грани модели.', tip: 'В Edit Mode три режима: вершины (1), рёбра (2), грани (3)' },
+          { title: 'Удали куб и добавь сферу', desc: 'Нажми X → Delete чтобы удалить куб. Затем Shift+A → Mesh → UV Sphere.', tip: 'Можно менять количество сегментов сферы прямо после добавления (внизу слева появится меню)', img: '../Фото для уроков/Базовое моделирование/Базовое моделирование №1.png' },
+          { title: 'Войди в режим редактирования', desc: 'Нажми Tab для переключения в Edit Mode. Ты увидишь вершины, рёбра и грани модели.', tip: 'В Edit Mode три режима: вершины (1), рёбра (2), грани (3)', img: '../Фото для уроков/Базовое моделирование/Базовое моделирование №2.png' },
           { title: 'Практикуй трансформации', desc: 'G — переместить, S — масштаб, R — поворот. После буквы нажми X/Y/Z для ограничения оси.', tip: 'Например: G X 2 Enter — сдвинуть на 2 единицы по оси X' },
           { title: 'Сохрани файл', desc: 'Ctrl+S → выбери место сохранения. Назови файл my_first_model.blend.', tip: 'Сохраняй часто! Blender не всегда делает автосохранение' },
         ]
@@ -36,9 +36,9 @@ const MODULES = [
         id: 2, title: 'Principled BSDF и шейдеры', level: 'Средний', color: '#E07B54', bg: '#FDF0E8', emoji: '🎨',
         desc: 'Погрузись в систему нод Blender. Создавай реалистичные материалы с помощью шейдера Principled BSDF и узнай как работает PBR.',
         steps: [
-          { title: 'Открой Material Properties', desc: 'На правой панели найди иконку шарика. Нажми New для создания нового материала.', tip: 'Можно сразу дать материалу имя, например Metal или Wood' },
-          { title: 'Изучи Principled BSDF', desc: 'Это главный шейдер Blender. Он содержит все параметры для реалистичных материалов.', tip: 'Base Color — цвет, Metallic — металл (0 или 1), Roughness — шероховатость (0=зеркало, 1=матовый)' },
-          { title: 'Создай металлический материал', desc: 'Установи Metallic = 1.0, Roughness = 0.1. Цвет поставь серебристый #C0C0C0.', tip: 'Для золота: Base Color = #FFD700, Metallic = 1, Roughness = 0.2' },
+          { title: 'Открой Material Properties', desc: 'На правой панели найди иконку шарика. Нажми New для создания нового материала.', tip: 'Можно сразу дать материалу имя, например Metal или Wood', img: '../Фото для уроков/Principled BSDF и шейдеры/Principled BSDF и шейдеры №1.png' },
+          { title: 'Изучи Principled BSDF', desc: 'Это главный шейдер Blender. Он содержит все параметры для реалистичных материалов.', tip: 'Base Color — цвет, Metallic — металл (0 или 1), Roughness — шероховатость (0=зеркало, 1=матовый)', img: '../Фото для уроков/Principled BSDF и шейдеры/Principled BSDF и шейдеры №2.png' },
+          { title: 'Создай металлический материал', desc: 'Установи Metallic = 1.0, Roughness = 0.1. Цвет поставь серебристый #C0C0C0.', tip: 'Для золота: Base Color = #FFD700, Metallic = 1, Roughness = 0.2', img: '../Фото для уроков/Principled BSDF и шейдеры/Principled BSDF и шейдеры №3.png' },
           { title: 'Открой Shader Editor', desc: 'Перейди в Shader Editor. Здесь видно граф материала. Добавь Noise Texture через Shift+A.', tip: 'Shift+A в Shader Editor — добавить новую ноду' },
           { title: 'Сравни два материала', desc: 'Создай второй объект, назначь ему другой материал. Сравни матовый и глянцевый.', tip: 'Чтобы назначить материал: выбери объект → в Properties выбери нужный материал' },
         ]
@@ -47,10 +47,10 @@ const MODULES = [
         id: 3, title: 'Текстуры и UV-развёртка', level: 'Средний', color: '#E07B54', bg: '#FDF0E8', emoji: '🗺️',
         desc: 'Научись накладывать текстуры на 3D-объекты через UV-развёртку. Создай реалистичную поверхность с использованием texture maps.',
         steps: [
-          { title: 'Добавь Image Texture', desc: 'В Shader Editor: Shift+A → Texture → Image Texture. Подключи к Base Color шейдера.', tip: 'Можно загрузить любой PNG или JPG файл в качестве текстуры' },
-          { title: 'Открой UV Editor', desc: 'Раздели окно и смени тип на UV Editor. Здесь отображается развёртка объекта.', tip: 'UV Editor показывает как 3D-поверхность "разворачивается" на плоскость' },
-          { title: 'Создай UV Unwrap', desc: 'В Edit Mode выдели всё (A), затем U → Unwrap. Объект развернётся в UV Editor.', tip: 'Smart UV Project работает лучше для сложных объектов — тоже попробуй' },
-          { title: 'Проверь в Material Preview', desc: 'Нажми Z → Material Preview (или кнопку в правом верхнем углу viewport). Текстура должна отображаться.', tip: 'Material Preview быстрее Cycles и хорошо подходит для проверки текстур' },
+          { title: 'Добавь Image Texture', desc: 'В Shader Editor: Shift+A → Texture → Image Texture. Подключи к Base Color шейдера.', tip: 'Можно загрузить любой PNG или JPG файл в качестве текстуры', img: '../Фото для уроков/Текстуры и UV-развёртка/Текстуры и UV-развёртка №1.png' },
+          { title: 'Открой UV Editor', desc: 'Раздели окно и смени тип на UV Editor. Здесь отображается развёртка объекта.', tip: 'UV Editor показывает как 3D-поверхность "разворачивается" на плоскость', img: '../Фото для уроков/Текстуры и UV-развёртка/Текстуры и UV-развёртка №2.png' },
+          { title: 'Создай UV Unwrap', desc: 'В Edit Mode выдели всё (A), затем U → Unwrap. Объект развернётся в UV Editor.', tip: 'Smart UV Project работает лучше для сложных объектов — тоже попробуй', img: '../Фото для уроков/Текстуры и UV-развёртка/Текстуры и UV-развёртка №3.png' },
+          { title: 'Проверь в Material Preview', desc: 'Нажми Z → Material Preview (или кнопку в правом верхнем углу viewport). Текстура должна отображаться.', tip: 'Material Preview быстрее Cycles и хорошо подходит для проверки текстур', img: '../Фото для уроков/Текстуры и UV-развёртка/Текстуры и UV-развёртка №4.png' },
         ]
       },
     ]
@@ -62,9 +62,9 @@ const MODULES = [
         id: 4, title: 'Ключевые кадры', level: 'Средний', color: '#3B82F6', bg: '#E8F4FD', emoji: '🎬',
         desc: 'Научись создавать анимацию через ключевые кадры (keyframes). Задавай положение, поворот и масштаб объекта в разные моменты времени.',
         steps: [
-          { title: 'Выдели объект и перейди к кадру 1', desc: 'Убедись что Timeline внизу отображает Frame 1. Нажми I → Location чтобы вставить ключевой кадр положения.', tip: 'Shortcut: I — Insert Keyframe. Выбери что именно записать: Location, Rotation, Scale или всё вместе' },
-          { title: 'Перейди к кадру 24', desc: 'В Timeline щёлкни на кадр 24 или введи 24 в поле Current Frame. Подвинь объект в другое место.', tip: '24 кадра = 1 секунда при стандартной частоте 24 fps' },
-          { title: 'Вставь второй ключевой кадр', desc: 'Снова нажми I → Location. Теперь между кадрами 1 и 24 есть анимация.', tip: 'Ключевые кадры видны в Timeline как жёлтые точки' },
+          { title: 'Выдели объект и перейди к кадру 1', desc: 'Убедись что Timeline внизу отображает Frame 1. Нажми I → Location чтобы вставить ключевой кадр положения.', tip: 'Shortcut: I — Insert Keyframe. Выбери что именно записать: Location, Rotation, Scale или всё вместе', img: '../Фото для уроков/Ключевые кадры/Ключевые кадры №1.png' },
+          { title: 'Перейди к кадру 24', desc: 'В Timeline щёлкни на кадр 24 или введи 24 в поле Current Frame. Подвинь объект в другое место.', tip: '24 кадра = 1 секунда при стандартной частоте 24 fps', img: '../Фото для уроков/Ключевые кадры/Ключевые кадры №2.png' },
+          { title: 'Вставь второй ключевой кадр', desc: 'Снова нажми I → Location. Теперь между кадрами 1 и 24 есть анимация.', tip: 'Ключевые кадры видны в Timeline как жёлтые точки', img: '../Фото для уроков/Ключевые кадры/Ключевые кадры №3.png' },
           { title: 'Воспроизведи анимацию', desc: 'Нажми пробел для воспроизведения. Объект должен плавно переместиться.', tip: 'Используй Graph Editor для редактирования кривых интерполяции' },
         ]
       },
@@ -72,9 +72,9 @@ const MODULES = [
         id: 5, title: 'Риггинг персонажа', level: 'Средний', color: '#3B82F6', bg: '#E8F4FD', emoji: '🦴',
         desc: 'Создай арматуру для персонажа. Научись привязывать меш к костям и создавать позы с помощью ключевых кадров.',
         steps: [
-          { title: 'Создай простую фигуру', desc: 'Смоделируй человечка из примитивов: тело — цилиндр, голова — сфера, руки и ноги — вытянутые кубы.', tip: 'Используй Ctrl+J чтобы объединить все части в один меш' },
-          { title: 'Добавь арматуру', desc: 'Shift+A → Armature → Single Bone. Расположи кость в центре фигуры.', tip: 'Включи X-Ray режим (Alt+Z) чтобы видеть кости сквозь меш' },
-          { title: 'Привяжи меш к арматуре', desc: 'Выдели меш, затем Shift+выдели арматуру. Ctrl+P → With Automatic Weights.', tip: 'Automatic Weights работает неидеально, но для начала достаточно' },
+          { title: 'Создай простую фигуру', desc: 'Смоделируй человечка из примитивов: тело — цилиндр, голова — сфера, руки и ноги — вытянутые кубы.', tip: 'Используй Ctrl+J чтобы объединить все части в один меш', img: '../Фото для уроков/Риггинг персонажа/Риггинг персонажа №1.png' },
+          { title: 'Добавь арматуру', desc: 'Shift+A → Armature → Single Bone. Расположи кость в центре фигуры.', tip: 'Включи X-Ray режим (Alt+Z) чтобы видеть кости сквозь меш', img: '../Фото для уроков/Риггинг персонажа/Риггинг персонажа №2.png' },
+          { title: 'Привяжи меш к арматуре', desc: 'Выдели меш, затем Shift+выдели арматуру. Ctrl+P → With Automatic Weights.', tip: 'Automatic Weights работает неидеально, но для начала достаточно', img: '../Фото для уроков/Риггинг персонажа/Риггинг персонажа №3.png' },
           { title: 'Создай позы', desc: 'Выдели арматуру, перейди в Pose Mode (Ctrl+Tab). Двигай кости через G и R.', tip: 'В Pose Mode кости двигаются с ограничениями как в настоящем скелете' },
         ]
       },
@@ -87,37 +87,37 @@ const MODULES = [
         id: 6, title: 'Рендеринг в Cycles', level: 'Углублённый', color: '#9B59B6', bg: '#F3E8FF', emoji: '✨',
         desc: 'Настрой фотореалистичный рендер с движком Cycles. Изучи HDRI освещение и денойзинг.',
         steps: [
-          { title: 'Переключись на Cycles', desc: 'Render Properties → Render Engine → Cycles. Выбери GPU Compute если есть видеокарта.', tip: 'Cycles медленнее, но даёт реалистичный результат. EEVEE быстрее' },
-          { title: 'Добавь HDRI освещение', desc: 'World Properties → Use Nodes → Background. Добавь Environment Texture и загрузи HDRI файл.', tip: 'Бесплатные HDRI на polyhaven.com' },
+          { title: 'Переключись на Cycles', desc: 'Render Properties → Render Engine → Cycles. Выбери GPU Compute если есть видеокарта.', tip: 'Cycles медленнее, но даёт реалистичный результат. EEVEE быстрее', img: '../Фото для уроков/Рендеринг в Cycles/Рендеринг в Cycles №1.png' },
+          { title: 'Добавь HDRI освещение', desc: 'World Properties → Use Nodes → Background. Добавь Environment Texture и загрузи HDRI файл.', tip: 'Бесплатные HDRI на polyhaven.com', img: '../Фото для уроков/Рендеринг в Cycles/Рендеринг в Cycles №2.png' },
           { title: 'Настрой 3-точечное освещение', desc: 'Добавь 3 Area Light: Key light справа и сверху, Fill light слева (мощность ×0.5), Rim light сзади.', tip: 'N в 3D Viewport → Item → Location для точного расположения' },
-          { title: 'Рендери и сохрани', desc: 'F12 — рендерить. Image → Save As → PNG с 16-bit. Сохрани как render_01.png.', tip: 'Для анимации: F12 → Render → Render Animation' },
+          { title: 'Рендери и сохрани', desc: 'F12 — рендерить. Image → Save As → PNG с 16-bit. Сохрани как render_01.png.', tip: 'Для анимации: F12 → Render → Render Animation', img: '../Фото для уроков/Рендеринг в Cycles/Рендеринг в Cycles №4.png' },
         ]
       },
       {
         id: 7, title: 'Геометрические ноды', level: 'Профи', color: '#F59E0B', bg: '#FFF8E1', emoji: '⚡',
         desc: 'Освой процедурное моделирование через систему геометрических нод. Создавай сложные объекты параметрически.',
         steps: [
-          { title: 'Добавь Geometry Nodes Modifier', desc: 'Выдели объект → Properties → wrench → Add Modifier → Geometry Nodes. Нажми New.', tip: 'Geometry Nodes — визуальное программирование. Каждая нода выполняет одну задачу' },
-          { title: 'Instance on Points', desc: 'Добавь Grid (Mesh Primitives) и Instance on Points ноду. Соедини Points с Grid выходом.', tip: 'Instance on Points ставит копию объекта в каждую точку сетки' },
-          { title: 'Параметризуй через inputs', desc: 'Добавь Integer ноду как Input. Подключи к Resolution или Count. Меняй параметр в modifier панели.', tip: 'Изменил одно число — изменилась вся сцена. В этом суть процедурного подхода' },
+          { title: 'Добавь Geometry Nodes Modifier', desc: 'Выдели объект → Properties → wrench → Add Modifier → Geometry Nodes. Нажми New.', tip: 'Geometry Nodes — визуальное программирование. Каждая нода выполняет одну задачу', img: '../Фото для уроков/Геометрические ноды/Геометрические ноды №1.png' },
+          { title: 'Instance on Points', desc: 'Добавь Grid (Mesh Primitives) и Instance on Points ноду. Соедини Points с Grid выходом.', tip: 'Instance on Points ставит копию объекта в каждую точку сетки', img: '../Фото для уроков/Геометрические ноды/Геометрические ноды №2.png' },
+          { title: 'Параметризуй через inputs', desc: 'Добавь Integer ноду как Input. Подключи к Resolution или Count. Меняй параметр в modifier панели.', tip: 'Изменил одно число — изменилась вся сцена. В этом суть процедурного подхода', img: '../Фото для уроков/Геометрические ноды/Геометрические ноды №3.png' },
         ]
       },
       {
         id: 8, title: 'Скульптинг', level: 'Углублённый', color: '#9B59B6', bg: '#F3E8FF', emoji: '🗿',
         desc: 'Изучи режим скульптинга для создания органических форм. Работай с кистями и динамической топологией.',
         steps: [
-          { title: 'Переключись в Sculpt Mode', desc: 'Выдели объект, смени режим на Sculpt Mode. Добавь subdivision для большего количества полигонов.', tip: 'Ctrl+R — добавить loop cut. Для скульпта нужно много полигонов' },
+          { title: 'Переключись в Sculpt Mode', desc: 'Выдели объект, смени режим на Sculpt Mode. Добавь subdivision для большего количества полигонов.', tip: 'Ctrl+R — добавить loop cut. Для скульпта нужно много полигонов', img: '../Фото для уроков/Скульптинг/Скульптинг №1.png' },
           { title: 'Изучи основные кисти', desc: 'Draw — выталкивает геометрию. Smooth (Shift) — сглаживает. Grab — тянет. Clay — лепит как из глины.', tip: 'F — изменить радиус кисти. Shift+F — изменить силу' },
-          { title: 'Dyntopo', desc: 'В настройках скульпта включи Dyntopo (Dynamic Topology). Это добавляет детали только там, где рисуешь.', tip: 'Dyntopo может сильно замедлить Blender если деталей слишком много' },
+          { title: 'Dyntopo', desc: 'В настройках скульпта включи Dyntopo (Dynamic Topology). Это добавляет детали только там, где рисуешь.', tip: 'Dyntopo может сильно замедлить Blender если деталей слишком много', img: '../Фото для уроков/Скульптинг/Скульптинг №3.png' },
         ]
       },
       {
         id: 9, title: 'Compositor и пост-обработка', level: 'Профи', color: '#F59E0B', bg: '#FFF8E1', emoji: '🎞️',
         desc: 'Работай с нодами Compositor для обработки результата рендера: цветокоррекция, глубина резкости, глоу-эффекты.',
         steps: [
-          { title: 'Открой Compositor', desc: 'Смени тип окна на Compositor. Включи "Use Nodes". Появится цепочка Render Layers → Composite.', tip: 'Compositor обрабатывает уже готовый рендер, как Photoshop но нодами' },
-          { title: 'Добавь Color Balance', desc: 'Shift+A → Color → Color Balance. Подключи между Render Layers и Composite. Настрой тени/полутона/света.', tip: 'Color Balance позволяет задавать разный цветовой тон для разных яркостей' },
-          { title: 'Glare эффект', desc: 'Shift+A → Filter → Glare. Тип Streaks или Fog Glow добавит красивые блики на яркие элементы.', tip: 'Порог (Threshold) управляет тем, что начинает светиться. Начни с 1.0' },
+          { title: 'Открой Compositor', desc: 'Смени тип окна на Compositor. Включи "Use Nodes". Появится цепочка Render Layers → Composite.', tip: 'Compositor обрабатывает уже готовый рендер, как Photoshop но нодами', img: '../Фото для уроков/Compositor и пост-обработка/Compositor и пост-обработка №1.png' },
+          { title: 'Добавь Color Balance', desc: 'Shift+A → Color → Color Balance. Подключи между Render Layers и Composite. Настрой тени/полутона/света.', tip: 'Color Balance позволяет задавать разный цветовой тон для разных яркостей', img: '../Фото для уроков/Compositor и пост-обработка/Compositor и пост-обработка №2.png' },
+          { title: 'Glare эффект', desc: 'Shift+A → Filter → Glare. Тип Streaks или Fog Glow добавит красивые блики на яркие элементы.', tip: 'Порог (Threshold) управляет тем, что начинает светиться. Начни с 1.0', img: '../Фото для уроков/Compositor и пост-обработка/Compositor и пост-обработка №3.png' },
         ]
       },
     ]

@@ -61,6 +61,7 @@ function openTask(id) {
       <div class="step-body">
         <div class="step-title">${s.title}</div>
         <div class="step-desc">${s.desc}</div>
+        ${s.img ? `<img src="${s.img}" class="step-img" alt="${s.title}" loading="lazy">` : ''}
         ${s.tip ? `<div class="step-tip">${s.tip}</div>` : ''}
       </div>
     </div>`).join('');
@@ -79,6 +80,17 @@ function closeTask() {
   document.getElementById('task-backdrop').classList.remove('open');
   document.getElementById('task-panel').classList.remove('open');
 }
+
+/* Лайтбокс для картинок шагов */
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('step-img')) {
+    const lb = document.createElement('div');
+    lb.className = 'step-img-lightbox';
+    lb.innerHTML = `<img src="${e.target.src}" alt="${e.target.alt}">`;
+    lb.addEventListener('click', () => lb.remove());
+    document.body.appendChild(lb);
+  }
+});
 
 function completeTask(id) {
   const completedTasks = getCompletedTasks();
