@@ -17,6 +17,7 @@ function renderTaskPanel() {
       <div class="task-panel-body">
         <div class="task-banner" id="panel-banner"></div>
         <div class="task-desc-box">
+          <div id="panel-video-wrap"></div>
           <div class="task-desc-txt" id="panel-desc"></div>
           <div class="steps-label" data-i18n="task.panel.steps">📋 Инструкция</div>
           <div id="panel-steps"></div>
@@ -45,6 +46,23 @@ function openTask(id) {
   document.getElementById('panel-title').textContent = task.title;
   document.getElementById('panel-desc').textContent  = task.desc;
 
+  // Видео урока
+  const videoWrap = document.getElementById('panel-video-wrap');
+  if (task.video) {
+    videoWrap.innerHTML = `
+      <div class="task-video-wrap">
+        <video class="task-video" controls preload="metadata" src="${task.video}">
+          <p class="task-video-fallback">
+            Ваш браузер не поддерживает воспроизведение этого формата.
+            <a href="${task.video}" download>Скачать видео</a>
+          </p>
+        </video>
+        <div class="task-video-label">🎬 Видеоурок</div>
+      </div>`;
+  } else {
+    videoWrap.innerHTML = '';
+  }
+
   const banner = document.getElementById('panel-banner');
   banner.style.background = `linear-gradient(135deg,${task.bg},${task.bg})`;
   banner.style.border = `1px solid ${task.color}30`;
@@ -61,6 +79,7 @@ function openTask(id) {
       <div class="step-body">
         <div class="step-title">${s.title}</div>
         <div class="step-desc">${s.desc}</div>
+        ${s.img ? `<img src="${s.img}" class="step-img" alt="${s.title}" loading="lazy">` : ''}
         ${s.tip ? `<div class="step-tip">${s.tip}</div>` : ''}
       </div>
     </div>`).join('');
@@ -76,9 +95,24 @@ function openTask(id) {
 }
 
 function closeTask() {
+  // Останавливаем видео при закрытии
+  const video = document.querySelector('.task-video');
+  if (video) { video.pause(); video.currentTime = 0; }
+
   document.getElementById('task-backdrop').classList.remove('open');
   document.getElementById('task-panel').classList.remove('open');
 }
+
+/* Лайтбокс для картинок шагов */
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('step-img')) {
+    const lb = document.createElement('div');
+    lb.className = 'step-img-lightbox';
+    lb.innerHTML = `<img src="${e.target.src}" alt="${e.target.alt}">`;
+    lb.addEventListener('click', () => lb.remove());
+    document.body.appendChild(lb);
+  }
+});
 
 function completeTask(id) {
   const completedTasks = getCompletedTasks();
