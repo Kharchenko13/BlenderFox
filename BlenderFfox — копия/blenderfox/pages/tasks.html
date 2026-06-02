@@ -44,10 +44,11 @@
 <script>
 (async function() {
   checkAuth();
+  await restoreSession();
   applyI18n();
   renderSidebar('tasks');
   renderTaskPanel();
-  initMedalUI();          // попап медали + toast
+  initMedalUI();
   await syncFromSupabase();
   renderTasks();
 })();

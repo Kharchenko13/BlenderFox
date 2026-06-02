@@ -61,9 +61,10 @@
 <script>
 (async function() {
   checkAuth();
+  await restoreSession();
   applyI18n();
   renderSidebar('medals');
-  initMedalUI();          // попап + toast
+  initMedalUI();
   await syncFromSupabase();
   renderMedals();
 })();

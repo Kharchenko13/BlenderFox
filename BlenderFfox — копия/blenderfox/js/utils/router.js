@@ -48,9 +48,8 @@ function saveSavedWorks(obj) {
 
 /**
  * Синхронизация из Supabase при загрузке страницы.
- * Делает MERGE: объединяет локальные данные с данными из базы.
- * Новый пользователь → Supabase вернёт пустые массивы → прогресс на нуле.
- * Существующий → данные из базы добавятся к локальным (union).
+ * На новом устройстве: localStorage пустой → берём всё из Supabase.
+ * На старом устройстве: мержим локальное + Supabase.
  */
 async function syncFromSupabase() {
   const u = getUser();
@@ -73,23 +72,34 @@ async function syncFromSupabase() {
     sbMedals.forEach(id => localMedals.add(id));
     saveEarnedMedals(localMedals);
 
-    // Сохранённые работы: добавляем из Supabase то чего нет локально
+    // Сохранённые работы: полный мерж с приоритетом данных из Supabase
+    // (Supabase — единственный источник истины для image_url)
     const localSaved = getSavedWorks();
+
     sbWorks.forEach(w => {
       const key = String(w.task_id);
       if (!localSaved[key]) localSaved[key] = [];
-      // Добавляем только если такой записи ещё нет (по id из Supabase)
-      const exists = localSaved[key].some(x => x.id === w.id);
-      if (!exists) {
-        localSaved[key].push({
-          id:        w.id,
-          title:     w.title,
-          tag:       w.tag,
-          image_url: w.image_url || null,
-          date:  new Date(w.created_at).toLocaleDateString('ru', { day: 'numeric', month: 'short' })
-        });
+
+      const existingIdx = localSaved[key].findIndex(x => x.id === w.id);
+      const record = {
+        id:        w.id,
+        title:     w.title,
+        tag:       w.tag || 'WIP',
+        image_url: w.image_url || null,  // ← фото с Supabase
+        date:      new Date(w.created_at).toLocaleDateString('ru', { day: 'numeric', month: 'short' })
+      };
+
+      if (existingIdx === -1) {
+        // Записи нет локально — добавляем
+        localSaved[key].push(record);
+      } else {
+        // Запись есть — обновляем image_url из Supabase если локально её нет
+        if (!localSaved[key][existingIdx].image_url && record.image_url) {
+          localSaved[key][existingIdx].image_url = record.image_url;
+        }
       }
     });
+
     saveSavedWorks(localSaved);
 
   } catch(e) {

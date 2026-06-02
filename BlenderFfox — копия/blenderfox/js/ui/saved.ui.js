@@ -28,6 +28,10 @@ function _esc(str) {
 /* ══════════════════════════════════════
    РЕНДЕР СЕТКИ
 ══════════════════════════════════════ */
+
+// Хранилище данных модулей для модалок (не передаём через HTML-атрибуты)
+const _moduleTasksMap = {};
+
 function renderSaved() {
   _colorIndex = 0;
   const savedWorks = getSavedWorks();
@@ -35,35 +39,19 @@ function renderSaved() {
   document.getElementById('saved-body').innerHTML = getModules().map(m => {
     const totalWorks = m.tasks.reduce((s, task) => s + (savedWorks[task.id] || []).length, 0);
 
-    const tasksHtml = m.tasks.map(task => {
+    _moduleTasksMap[m.id] = m.tasks.map(task => ({ id: task.id, title: task.title, emoji: task.emoji }));
+
+    const workCards = m.tasks.flatMap(task => {
       const works = savedWorks[task.id] || [];
-
-      const uploadCard = `
-        <div style="aspect-ratio:4/3">
-          <div class="upload-card" style="height:100%"
-               onclick="openAddWorkModal(${task.id}, '${_esc(task.title)}', '${task.emoji}')">
-            <div class="upload-icon">
-              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </div>
-            <div class="upload-txt">${t('saved.add')}<br>
-              <span style="opacity:.65;font-weight:600">${_esc(task.title)}</span>
-            </div>
-          </div>
-        </div>`;
-
-      const workCards = works.map(w => {
+      return works.map((w, wIdx) => {
         const col = nextColor();
         const hasPhoto = !!w.image_url;
         const thumb = hasPhoto
           ? `<img src="${w.image_url}" class="saved-card-photo" alt="">`
           : `<div class="saved-card-emoji">${task.emoji}</div>`;
-        const wIdAttr  = _esc(w.id  || '');
-        const wTitle   = _esc(w.title);
-        const wDate    = _esc(w.date);
-        const tTitle   = _esc(task.title);
         return `
         <div class="saved-card"
-             onclick="openWorkDetail('${wIdAttr}','${wTitle}','${task.emoji}','${wDate}','${tTitle}',${task.id})">
+             onclick="openWorkDetail('${_esc(w.id||'')}','${_esc(w.title)}','${task.emoji}','${_esc(w.date)}','${_esc(task.title)}',${task.id},${wIdx})">
           <div class="saved-card-thumb ${hasPhoto ? 'has-photo' : col}">
             ${thumb}
             <div class="saved-card-tag">${w.tag || 'WIP'}</div>
@@ -74,10 +62,19 @@ function renderSaved() {
             <div class="saved-card-date">${_esc(w.date)}</div>
           </div>
         </div>`;
-      }).join('');
-
-      return uploadCard + workCards;
+      });
     }).join('');
+
+    // Один плюсик в начале сетки
+    const uploadCard = `
+      <div style="aspect-ratio:4/3">
+        <div class="upload-card" style="height:100%" onclick="openAddWorkModal('${m.id}')">
+          <div class="upload-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+          <div class="upload-txt">${t('saved.add')}</div>
+        </div>
+      </div>`;
 
     return `
     <div class="saved-module-block fade-up">
@@ -86,7 +83,7 @@ function renderSaved() {
         <div class="saved-module-title">${m.title}</div>
         <div class="saved-module-count">${_worksLabel(totalWorks)}</div>
       </div>
-      <div class="saved-grid">${tasksHtml}</div>
+      <div class="saved-grid">${uploadCard}${workCards}</div>
     </div>`;
   }).join('');
 }
@@ -98,18 +95,35 @@ function renderSaved() {
 let _addWorkTaskId   = null;
 let _addWorkImageB64 = null;
 
-function openAddWorkModal(taskId, taskTitle, taskEmoji) {
-  _addWorkTaskId   = taskId;
+function openAddWorkModal(moduleId) {
   _addWorkImageB64 = null;
+
+  const moduleTasks = _moduleTasksMap[moduleId] || [];
+  _addWorkTaskId = moduleTasks[0]?.id ?? null;
 
   // Переводы
   document.getElementById('aw-title').textContent      = t('saved.modal.title');
-  document.getElementById('aw-task-label').textContent = taskTitle;
   document.getElementById('aw-photo-hint').textContent = t('saved.modal.photo.hint');
   document.getElementById('aw-name-label').textContent = t('saved.modal.name.label');
   document.getElementById('aw-name').placeholder       = t('saved.modal.name.placeholder');
   document.getElementById('aw-cancel-btn').textContent = t('edit.cancel');
   document.getElementById('aw-save-btn').textContent   = t('edit.save');
+
+  // Select выбора задания
+  const taskLabelEl = document.getElementById('aw-task-label');
+  if (moduleTasks.length > 1) {
+    taskLabelEl.innerHTML = `
+      <select id="aw-task-select" class="aw-task-select">
+        ${moduleTasks.map(task =>
+          `<option value="${task.id}">${task.emoji} ${task.title}</option>`
+        ).join('')}
+      </select>`;
+    document.getElementById('aw-task-select').addEventListener('change', function() {
+      _addWorkTaskId = Number(this.value);
+    });
+  } else {
+    taskLabelEl.textContent = moduleTasks[0]?.title || '';
+  }
 
   // Сброс
   document.getElementById('aw-name').value          = '';
@@ -118,7 +132,6 @@ function openAddWorkModal(taskId, taskTitle, taskEmoji) {
   document.getElementById('aw-file-input').value    = '';
   _resetPhotoUI();
 
-  // Открыть
   document.getElementById('add-work-backdrop').classList.add('open');
   setTimeout(() => document.getElementById('aw-name').focus(), 150);
 }
@@ -214,70 +227,71 @@ async function submitAddWork() {
   const u    = getUser();
   const date = new Date().toLocaleDateString('ru', { day: 'numeric', month: 'short' });
 
-  try {
-    let savedId = null;
+  let savedId    = null;
+  let savedToDb  = false;
 
-    if (u && typeof sbSaveWork === 'function') {
+  // Попытка сохранить в Supabase
+  if (u && typeof sbSaveWork === 'function') {
+    try {
       showToast(t('saved.toast.saving'));
       const row = await sbSaveWork(u.id, _addWorkTaskId, name, 'WIP', _addWorkImageB64);
-      savedId = row?.id || null;
+      savedId   = row?.id || null;
+      savedToDb = true;
+    } catch(err) {
+      // Показываем ошибку но продолжаем — сохраняем локально
+      console.warn('sbSaveWork error:', err.message);
+      document.getElementById('aw-error').textContent = `⚠️ БД: ${err.message}`;
     }
+  }
 
-    // Сохраняем локально
-    const savedWorks = getSavedWorks();
-    const key = String(_addWorkTaskId);
-    if (!savedWorks[key]) savedWorks[key] = [];
-    savedWorks[key].unshift({ id: savedId, title: name, tag: 'WIP', image_url: _addWorkImageB64, date });
-    saveSavedWorks(savedWorks);
+  // Сохраняем локально в любом случае
+  const savedWorks = getSavedWorks();
+  const key = String(_addWorkTaskId);
+  if (!savedWorks[key]) savedWorks[key] = [];
+  savedWorks[key].unshift({ id: savedId, title: name, tag: 'WIP', image_url: _addWorkImageB64, date });
+  saveSavedWorks(savedWorks);
 
-    // Медаль "Архивариус"
-    const earned = getEarnedMedals();
-    if (!earned.has('saver')) {
-      earned.add('saver');
-      saveEarnedMedals(earned);
-      if (u && typeof sbSaveMedal === 'function') sbSaveMedal(u.id, 'saver').catch(() => {});
-    }
-    checkAllMedals();
+  // Медаль "Архивариус"
+  const earned = getEarnedMedals();
+  if (!earned.has('saver')) {
+    earned.add('saver');
+    saveEarnedMedals(earned);
+    if (u && typeof sbSaveMedal === 'function') sbSaveMedal(u.id, 'saver').catch(() => {});
+  }
+  checkAllMedals();
 
+  if (savedToDb) {
     document.getElementById('aw-success').textContent = t('saved.toast.saved');
     showToast(t('saved.toast.saved'));
-
-    setTimeout(() => {
-      closeAddWorkModal();
-      renderSaved();
-    }, 600);
-
-  } catch(err) {
-    // Supabase упал — сохраняем только локально
-    const savedWorks = getSavedWorks();
-    const key = String(_addWorkTaskId);
-    if (!savedWorks[key]) savedWorks[key] = [];
-    savedWorks[key].unshift({ title: name, tag: 'WIP', image_url: _addWorkImageB64, date });
-    saveSavedWorks(savedWorks);
+  } else {
     showToast(t('saved.toast.local'));
-
-    setTimeout(() => { closeAddWorkModal(); renderSaved(); }, 800);
-  } finally {
-    btn.disabled    = false;
-    btn.textContent = t('edit.save');
   }
+
+  btn.disabled    = false;
+  btn.textContent = t('edit.save');
+
+  setTimeout(() => {
+    closeAddWorkModal();
+    renderSaved();
+  }, savedToDb ? 600 : 1200);
 }
 
 /* ══════════════════════════════════════
    WORK DETAIL MODAL
 ══════════════════════════════════════ */
 
-let _detailWorkId = null;
-let _detailTaskId = null;
+let _detailWorkId  = null;
+let _detailTaskId  = null;
+let _detailWorkIdx = -1;  // индекс в массиве — для надёжного удаления
 
-function openWorkDetail(workId, title, emoji, date, taskTitle, taskId) {
-  _detailWorkId = workId;
-  _detailTaskId = taskId;
+function openWorkDetail(workId, title, emoji, date, taskTitle, taskId, wIdx) {
+  _detailWorkId  = workId;
+  _detailTaskId  = taskId;
+  _detailWorkIdx = (wIdx !== undefined) ? Number(wIdx) : -1;
 
-  // Фото или эмодзи
   const savedWorks = getSavedWorks();
-  const work = (savedWorks[String(taskId)] || [])
-    .find(w => (w.id && w.id === workId) || w.title === title);
+  const arr  = savedWorks[String(taskId)] || [];
+  const work = _detailWorkIdx >= 0 ? arr[_detailWorkIdx] : arr.find(w => w.id === workId);
 
   const photoWrap = document.getElementById('wd-photo-wrap');
   if (work?.image_url) {
@@ -302,13 +316,21 @@ async function deleteWork() {
 
   const savedWorks = getSavedWorks();
   const key = String(_detailTaskId);
+
   if (savedWorks[key]) {
-    savedWorks[key] = savedWorks[key].filter(w => w.id !== _detailWorkId);
+    if (_detailWorkIdx >= 0) {
+      // Удаляем по индексу — работает даже если id = null
+      savedWorks[key].splice(_detailWorkIdx, 1);
+    } else if (_detailWorkId) {
+      // Fallback: удаляем по id
+      savedWorks[key] = savedWorks[key].filter(w => w.id !== _detailWorkId);
+    }
     saveSavedWorks(savedWorks);
   }
 
+  // Удаляем из Supabase если есть uuid
   if (_detailWorkId && typeof sbDeleteWork === 'function') {
-    try { await sbDeleteWork(_detailWorkId); } catch(e) { console.warn('Delete error:', e.message); }
+    sbDeleteWork(_detailWorkId).catch(e => console.warn('Delete error:', e.message));
   }
 
   closeWorkDetail();

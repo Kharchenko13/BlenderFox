@@ -101,6 +101,7 @@
 (async function() {
   const u = checkAuth();
   if (!u) return;
+  await restoreSession();
   applyI18n();
   renderSidebar('saved');
   initMedalUI();

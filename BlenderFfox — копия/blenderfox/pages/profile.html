@@ -155,6 +155,7 @@
 (async function() {
   const u = checkAuth();
   if (!u) return;
+  await restoreSession();
   renderSidebar('profile');
   initMedalUI();
   await syncFromSupabase();

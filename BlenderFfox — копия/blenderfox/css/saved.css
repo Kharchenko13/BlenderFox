@@ -8,6 +8,18 @@
 .saved-module-title  { font-family: var(--font-display); font-size: 15px; font-weight: 800; color: var(--text); }
 .saved-module-count  { font-size: 11px; color: var(--text-lt); margin-left: auto; }
 
+.saved-add-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: 20px;
+  background: var(--c); border: none; cursor: pointer;
+  font-family: var(--font); font-size: 12px; font-weight: 700;
+  color: #fff; transition: all .15s;
+  box-shadow: 0 2px 8px rgba(224,123,84,.3);
+  flex-shrink: 0;
+}
+.saved-add-btn:hover { background: var(--c-dk); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(224,123,84,.4); }
+.saved-add-btn svg { width: 14px; height: 14px; stroke: #fff; fill: none; stroke-width: 2.5; }
+
 .saved-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
 
 .saved-card { border-radius: var(--r); border: 1px solid var(--border); overflow: hidden; cursor: pointer; transition: all .2s; }
@@ -115,6 +127,29 @@
   border-radius: 20px;
   margin-bottom: 16px;
 }
+
+/* Select выбора задания */
+.aw-task-select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid var(--c-lt);
+  border-radius: 10px;
+  background: var(--c-bg);
+  color: var(--c-dk);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23E07B54' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 36px;
+  transition: border-color .2s;
+}
+.aw-task-select:focus { border-color: var(--c); }
 
 /* Зона загрузки фото */
 .sw-photo-area {

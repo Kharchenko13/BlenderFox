@@ -81,6 +81,7 @@
 (async function() {
   const u = checkAuth();
   if (!u) return;
+  await restoreSession();
   applyI18n();
 
   document.getElementById('home-title').textContent    = `${t('home.title')}, ${u.name} 👋`;
