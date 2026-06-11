@@ -291,3 +291,7 @@
 .lang-option.active .lang-check {
   visibility: visible;
 }
+
+/* Прогресс обучения — не кликабельная строка */
+div.menu-row { cursor: default; }
+div.menu-row:hover { background: transparent; }
