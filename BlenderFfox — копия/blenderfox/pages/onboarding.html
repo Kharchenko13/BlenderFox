@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BlenderFox</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/mobile.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;overflow:hidden;}
@@ -15,42 +14,20 @@ body{font-family:'Nunito',sans-serif;background:#fff;color:#1E1610;-webkit-font-
 
 /* LEFT */
 .ob-left{
-  flex:1;
-  padding:0 72px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
+  flex:1;padding:0 72px;
+  display:flex;flex-direction:column;justify-content:center;
   padding-bottom:80px;
 }
-
 .ob-title{
   font-family:'Syne',sans-serif;
-  font-size:clamp(48px,5.5vw,72px);
-  font-weight:800;
-  line-height:1.0;
-  letter-spacing:-2px;
-  color:#1E1610;
-  margin-bottom:18px;
+  font-size:clamp(48px,5.5vw,72px);font-weight:800;
+  line-height:1.0;letter-spacing:-2px;color:#1E1610;margin-bottom:18px;
 }
 .ob-title span{color:#E07B54;}
-
-.ob-tagline{
-  font-size:15px;
-  color:#9A8070;
-  line-height:1.7;
-  max-width:420px;
-  margin-bottom:36px;
-  font-weight:500;
-}
-
+.ob-tagline{font-size:15px;color:#9A8070;line-height:1.7;max-width:420px;margin-bottom:36px;font-weight:500;}
 .ob-features{display:flex;flex-direction:column;gap:10px;margin-bottom:40px;}
 .ob-feature{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:600;color:#63503E;}
-.ob-feature-icon{
-  width:34px;height:34px;border-radius:9px;
-  background:#FDF0E8;display:flex;align-items:center;
-  justify-content:center;font-size:17px;flex-shrink:0;
-}
-
+.ob-feature-icon{width:34px;height:34px;border-radius:9px;background:#FDF0E8;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
 .ob-btn{
   display:inline-flex;align-items:center;gap:10px;
   padding:15px 34px;
@@ -62,7 +39,6 @@ body{font-family:'Nunito',sans-serif;background:#fff;color:#1E1610;-webkit-font-
 .ob-btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(224,123,84,.45);}
 .ob-btn:active{transform:scale(.98);}
 .ob-btn svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.5;}
-
 .ob-login{margin-top:16px;font-size:13px;color:#9A8070;}
 .ob-login a{color:#E07B54;font-weight:700;text-decoration:none;}
 .ob-login a:hover{text-decoration:underline;}
@@ -74,36 +50,120 @@ body{font-family:'Nunito',sans-serif;background:#fff;color:#1E1610;-webkit-font-
   position:relative;
   background:radial-gradient(ellipse 80% 70% at 60% 50%,rgba(224,123,84,.07) 0%,transparent 70%);
 }
-
-/* FOX */
 .fox-container{position:relative;width:580px;height:580px;}
-.fox-head{
-  position:absolute;top:0;left:0;
-  width:100%;height:100%;
-  object-fit:contain;z-index:2;  /* голова поверх белков */
-}
-
-/* Белок глаза — под головой */
-.eye{
-  position:absolute;
-  width:160px;height:160px;
-  border-radius:50%;
-  z-index:1;
-  overflow:hidden;
-  background:transparent;
-}
-.eye-left {top:33%;left:26%;}
+.fox-head{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;z-index:2;}
+.eye{position:absolute;width:160px;height:160px;border-radius:50%;z-index:1;overflow:hidden;background:transparent;}
+.eye-left{top:33%;left:26%;}
 .eye-right{top:33%;right:24%;}
-
-/* Зрачок — меньше контейнера, двигается внутри */
-.pupil{
-  position:absolute;
-  width:130px;height:130px;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  transition:transform 0.06s ease-out;
-}
+.pupil{position:absolute;width:130px;height:130px;top:50%;left:50%;transform:translate(-50%,-50%);transition:transform 0.06s ease-out;}
 .pupil img{width:100%;height:100%;object-fit:contain;}
+
+/* ══════════════════════════
+   MOBILE  ≤ 768px
+══════════════════════════ */
+@media (max-width: 768px) {
+  html, body {
+    height: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #FAF8F5;
+  }
+
+  .ob-wrap {
+    flex-direction: column;
+    height: auto;
+    min-height: 100dvh;
+    align-items: stretch;
+  }
+
+  /* Лиса — сверху, на всю ширину */
+  .ob-right {
+    width: 100%;
+    height: 44vw;
+    min-height: 200px;
+    max-height: 280px;
+    order: -1;
+    flex-shrink: 0;
+    background: linear-gradient(180deg, #2a1508 0%, #E07B54 60%, #FAF8F5 100%);
+    align-items: center;
+    justify-content: flex-end;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .fox-container {
+    width: 240px;
+    height: 240px;
+    position: relative;
+    margin-right: 0;
+  }
+
+  /* Глаза — скрыть на мобиле (маленькие, не работают) */
+  .eye { display: none; }
+
+  /* Контент */
+  .ob-left {
+    flex: 1;
+    padding: 28px 22px 120px;
+    justify-content: flex-start;
+    background: #FAF8F5;
+  }
+
+  .ob-title {
+    font-size: clamp(36px, 10vw, 48px);
+    letter-spacing: -1px;
+    line-height: 1.05;
+    margin-bottom: 12px;
+  }
+
+  .ob-tagline {
+    font-size: 14px;
+    margin-bottom: 24px;
+    max-width: 100%;
+  }
+
+  .ob-features {
+    margin-bottom: 24px;
+    gap: 10px;
+  }
+
+  .ob-feature {
+    font-size: 14px;
+    background: #fff;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid #E5D9CE;
+  }
+
+  .ob-feature-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    font-size: 18px;
+  }
+
+  /* Кнопка — фиксированная снизу */
+  .ob-btn {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-radius: 0;
+    padding: 18px 24px;
+    padding-bottom: calc(18px + env(safe-area-inset-bottom));
+    justify-content: center;
+    font-size: 17px;
+    z-index: 50;
+    box-shadow: 0 -4px 24px rgba(224,123,84,.3);
+  }
+
+  .ob-login {
+    text-align: center;
+    font-size: 13px;
+    padding-bottom: 8px;
+  }
+}
 </style>
 </head>
 <body>
@@ -112,13 +172,11 @@ body{font-family:'Nunito',sans-serif;background:#fff;color:#1E1610;-webkit-font-
 
   <div class="ob-left">
     <div class="ob-title">Blender<span>Fox</span></div>
-
     <p class="ob-tagline">
       Образовательная платформа, где 3D-моделирование превращается
       в увлекательный путь с чёткими модулями, практическими кейсами
       и системой достижений.
     </p>
-
     <div class="ob-features">
       <div class="ob-feature">
         <div class="ob-feature-icon">🎯</div>
@@ -133,12 +191,10 @@ body{font-family:'Nunito',sans-serif;background:#fff;color:#1E1610;-webkit-font-
         Сохраняй свои работы и отслеживай прогресс
       </div>
     </div>
-
     <a href="auth.html" class="ob-btn">
       Начать обучение
       <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
     </a>
-
     <div class="ob-login">
       Уже есть аккаунт? <a href="auth.html">Войти →</a>
     </div>
@@ -146,18 +202,12 @@ body{font-family:'Nunito',sans-serif;background:#fff;color:#1E1610;-webkit-font-
 
   <div class="ob-right">
     <div class="fox-container">
-      <!-- Глаза ПЕРВЫМИ — под головой (z-index:1) -->
       <div class="eye eye-left">
-        <div class="pupil" id="pupil-left">
-          <img src="../assets/eye.jpg" alt="eye">
-        </div>
+        <div class="pupil" id="pupil-left"><img src="../assets/eye.jpg" alt="eye"></div>
       </div>
       <div class="eye eye-right">
-        <div class="pupil" id="pupil-right">
-          <img src="../assets/eye.jpg" alt="eye">
-        </div>
+        <div class="pupil" id="pupil-right"><img src="../assets/eye.jpg" alt="eye"></div>
       </div>
-      <!-- Голова ПОВЕРХ глаз (z-index:2) -->
       <img src="../assets/fox-head.jpg" class="fox-head" alt="Лиса">
     </div>
   </div>
@@ -184,7 +234,6 @@ function movePupil(pupil,mouseEvent){
   let dx = mouseEvent.clientX - cx;
   let dy = mouseEvent.clientY - cy;
   const dist = Math.sqrt(dx*dx+dy*dy);
-  /* maxMove=8 — зрачок не улетает за границу глаза */
   const max  = 8;
   if(dist>max){dx=(dx/dist)*max;dy=(dy/dist)*max;}
   pupil.style.transform=`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px))`;

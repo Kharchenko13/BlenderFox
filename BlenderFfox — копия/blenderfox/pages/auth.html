@@ -91,6 +91,9 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 function setBoxHeight(tab) {
+  // На мобиле не трогаем высоту — CSS управляет через auto
+  if (window.innerWidth <= 768) return;
+
   const box      = document.getElementById('auth-box');
   const wrap     = document.getElementById('forms-wrap');
   const formEl   = document.getElementById(tab === 'login' ? 'form-login' : 'form-reg');

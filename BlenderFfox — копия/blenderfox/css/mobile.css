@@ -14,7 +14,13 @@
   /* ─────────────────────────────────
      СКРЫТЬ САЙДБАР / ЛЕЙАУТ
   ───────────────────────────────── */
-  .sidebar { display: none !important; }
+  .sidebar,
+  aside.sidebar,
+  #sidebar {
+    display: none !important;
+    width: 0 !important;
+    overflow: hidden !important;
+  }
 
   .app-shell {
     flex-direction: column;
@@ -23,6 +29,8 @@
 
   .main {
     flex: 1;
+    width: 100% !important;
+    max-width: 100% !important;
     height: 100dvh;
     overflow-y: auto;
     overflow-x: hidden;
@@ -461,17 +469,21 @@
     border-radius: 28px 28px 0 0 !important;
     padding: 28px 20px !important;
     padding-bottom: calc(28px + env(safe-area-inset-bottom)) !important;
-    max-height: 85dvh;
-    overflow-y: auto;
+    max-height: 85dvh !important;
+    overflow-y: auto !important;
     height: auto !important;
     transition: none !important;
+    box-shadow: 0 -8px 40px rgba(0,0,0,.2) !important;
+  }
+
+  /* Убрать анимацию высоты на мобиле — она ломает layout */
+  .auth-box.show-reg {
+    height: auto !important;
   }
 
   .auth-brand { margin-bottom: 20px; }
   .auth-brand-name { font-size: 28px; }
-
   .auth-tabs { margin-bottom: 18px; }
-
   .form-group { margin-bottom: 12px; }
 
   .form-input {
