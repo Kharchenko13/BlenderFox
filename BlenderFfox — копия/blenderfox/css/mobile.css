@@ -1,0 +1,338 @@
+/* ══════════════════════════════════════
+   BLENDERFOX — MOBILE CSS
+   Адаптивная вёрстка для ширины ≤ 768px
+══════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  /* ════════════════════════════════
+     СКРЫТЬ САЙДБАР / РАСТЯНУТЬ MAIN
+  ════════════════════════════════ */
+  .sidebar { display: none !important; }
+
+  .app-shell {
+    flex-direction: column;
+  }
+
+  .main {
+    height: 100dvh;
+    padding-bottom: 70px;
+    overflow-x: hidden;
+  }
+
+  /* ════════════════════════════════
+     НИЖНИЙ ТАБ-БАР
+  ════════════════════════════════ */
+  .mobile-tabbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: #fff;
+    border-top: 1px solid #E5D9CE;
+    display: flex;
+    align-items: stretch;
+    z-index: 100;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .mobile-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-decoration: none;
+    color: #9A8070;
+    font-family: 'Nunito', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    transition: color 0.2s;
+  }
+
+  .mobile-tab svg {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+  }
+
+  .mobile-tab.active {
+    color: #E07B54;
+  }
+
+  /* ════════════════════════════════
+     PAGE HEADER
+  ════════════════════════════════ */
+  .page-header {
+    padding: 16px 18px 12px;
+  }
+
+  .page-title {
+    font-size: 26px;
+    font-weight: 800;
+  }
+
+  .page-sub {
+    font-size: 13px;
+  }
+
+  .page-body {
+    padding: 16px 18px;
+  }
+
+  /* ════════════════════════════════
+     HOME PAGE
+  ════════════════════════════════ */
+  .welcome-banner {
+    border-radius: 16px;
+    margin-bottom: 16px;
+  }
+
+  .welcome-text-title {
+    font-size: 18px;
+  }
+
+  .welcome-text-sub {
+    font-size: 13px;
+  }
+
+  .welcome-cta {
+    display: none;
+  }
+
+  /* Статы — 2 колонки на мобиле вместо 3 */
+  .home-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  /* Третья карточка — на всю ширину */
+  .home-grid .stat-card:nth-child(3) {
+    grid-column: 1 / -1;
+  }
+
+  .stat-card {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .stat-card-val {
+    font-size: 28px;
+  }
+
+  /* Модули — одна колонка */
+  .home-module-card {
+    padding: 14px 16px;
+  }
+
+  /* ════════════════════════════════
+     TASKS PAGE
+  ════════════════════════════════ */
+  .task-card {
+    border-radius: 14px;
+    padding: 14px;
+  }
+
+  /* Task panel — полноэкранный */
+  .task-panel {
+    width: 100% !important;
+    border-radius: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+  }
+
+  .task-panel-header {
+    padding: 16px 18px 14px;
+  }
+
+  .task-panel-body {
+    padding: 16px 18px;
+  }
+
+  .task-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px 16px;
+    gap: 12px;
+  }
+
+  .task-banner-emoji {
+    font-size: 44px;
+  }
+
+  .task-panel-footer {
+    padding: 12px 18px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+
+  /* ════════════════════════════════
+     MEDALS PAGE
+  ════════════════════════════════ */
+  .medals-summary {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .medals-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px;
+  }
+
+  .medal-card {
+    padding: 16px 10px;
+  }
+
+  .medal-icon {
+    font-size: 28px;
+  }
+
+  /* ════════════════════════════════
+     PROFILE PAGE
+  ════════════════════════════════ */
+  .profile-layout {
+    grid-template-columns: 1fr !important;
+    gap: 14px;
+  }
+
+  .profile-card-main {
+    border-radius: 16px;
+  }
+
+  /* ════════════════════════════════
+     SAVED PAGE
+  ════════════════════════════════ */
+  .saved-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px;
+  }
+
+  .saving-toast {
+    bottom: 80px;
+    right: 16px;
+    left: 16px;
+    text-align: center;
+  }
+
+  /* ════════════════════════════════
+     AUTH PAGE
+  ════════════════════════════════ */
+  html:has(.auth-screen),
+  body:has(.auth-screen) {
+    overflow: hidden;
+  }
+
+  .auth-screen {
+    align-items: flex-end !important;
+  }
+
+  .auth-box {
+    width: 100% !important;
+    border-radius: 28px 28px 0 0 !important;
+    padding: 32px 24px 40px !important;
+    max-height: 80dvh;
+    overflow-y: auto;
+    /* Сброс фиксированной высоты — на мобиле авто */
+    height: auto !important;
+  }
+
+  .btn-primary {
+    width: 100% !important;
+  }
+
+  /* ════════════════════════════════
+     ONBOARDING / LANDING (onboarding.html)
+  ════════════════════════════════ */
+
+  /* Override the inline overflow:hidden so the page can scroll on mobile */
+  html:has(.ob-wrap),
+  body:has(.ob-wrap) {
+    overflow: auto !important;
+    height: auto !important;
+  }
+
+  .ob-wrap {
+    flex-direction: column;
+    height: auto;
+    min-height: 100dvh;
+    overflow-y: auto;
+    align-items: stretch;
+  }
+
+  /* Правая секция с лисой — вверху, ~42% экрана */
+  .ob-right {
+    width: 100%;
+    height: 42dvh;
+    min-height: 240px;
+    order: -1;
+    flex-shrink: 0;
+    background: radial-gradient(ellipse 80% 70% at 50% 60%, rgba(224,123,84,.1) 0%, transparent 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .fox-container {
+    width: min(340px, 80vw);
+    height: min(340px, 80vw);
+  }
+
+  /* Левая секция — контент снизу */
+  .ob-left {
+    flex: 1;
+    padding: 28px 24px;
+    padding-bottom: 120px;
+    justify-content: flex-start;
+  }
+
+  .ob-title {
+    font-size: clamp(36px, 9vw, 52px);
+    letter-spacing: -1px;
+    margin-bottom: 14px;
+  }
+
+  .ob-tagline {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .ob-features {
+    margin-bottom: 28px;
+    gap: 8px;
+  }
+
+  .ob-feature {
+    font-size: 14px;
+  }
+
+  /* Кнопка "Начать обучение" — фиксированная снизу, оранжевая, на всю ширину */
+  .ob-btn {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-radius: 0;
+    padding: 18px 24px;
+    padding-bottom: calc(18px + env(safe-area-inset-bottom));
+    justify-content: center;
+    font-size: 16px;
+    z-index: 50;
+    box-shadow: 0 -4px 20px rgba(224,123,84,.25);
+  }
+
+  .ob-login {
+    margin-top: 12px;
+    font-size: 13px;
+    text-align: center;
+  }
+
+}

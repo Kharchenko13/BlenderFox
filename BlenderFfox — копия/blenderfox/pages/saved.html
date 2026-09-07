@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="../css/sidebar.css">
 <link rel="stylesheet" href="../css/saved.css">
 <link rel="stylesheet" href="../css/medals.css">
+<link rel="stylesheet" href="../css/mobile.css">
 </head>
 <body>
 
@@ -30,13 +31,11 @@
 
 <div class="saving-toast" id="toast"></div>
 
-<!-- ══ МОДАЛКА: Добавить работу ══ -->
 <div class="sw-backdrop" id="add-work-backdrop">
   <div class="sw-modal" id="add-work-modal">
     <div class="sw-modal-title" id="aw-title">Добавить работу</div>
     <div class="sw-task-chip"   id="aw-task-label"></div>
 
-    <!-- Зона фото -->
     <div class="sw-photo-area" id="aw-photo-area">
       <div class="sw-photo-placeholder" id="aw-photo-placeholder">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
@@ -51,7 +50,6 @@
     </div>
     <input type="file" id="aw-file-input" accept="image/*" style="display:none" onchange="onWorkPhotoSelected(this)">
 
-    <!-- Название -->
     <div class="sw-form-group">
       <label class="sw-form-label" id="aw-name-label">Название работы</label>
       <input class="sw-form-input" id="aw-name" type="text" maxlength="80"
@@ -68,7 +66,6 @@
   </div>
 </div>
 
-<!-- ══ МОДАЛКА: Просмотр работы ══ -->
 <div class="sw-backdrop" id="work-detail-backdrop">
   <div class="sw-modal sw-detail-modal" id="work-detail-modal">
     <div class="sw-detail-photo-wrap" id="wd-photo-wrap"></div>
@@ -97,6 +94,7 @@
 <script src="../js/ui/sidebar.js"></script>
 <script src="../js/ui/medals.ui.js"></script>
 <script src="../js/ui/saved.ui.js"></script>
+<script src="../js/ui/mobile.nav.js"></script>
 <script>
 (async function() {
   const u = checkAuth();
