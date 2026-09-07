@@ -1,40 +1,49 @@
 /* ══════════════════════════════════════
-   BLENDERFOX — MOBILE CSS
-   Адаптивная вёрстка для ширины ≤ 768px
+   BLENDERFOX — MOBILE CSS  ≤ 768px
 ══════════════════════════════════════ */
 
 @media (max-width: 768px) {
 
-  /* ════════════════════════════════
-     СКРЫТЬ САЙДБАР / РАСТЯНУТЬ MAIN
-  ════════════════════════════════ */
+  /* ─────────────────────────────────
+     БАЗОВЫЙ СБРОС
+  ───────────────────────────────── */
+  html, body {
+    overflow-x: hidden;
+  }
+
+  /* ─────────────────────────────────
+     СКРЫТЬ САЙДБАР / ЛЕЙАУТ
+  ───────────────────────────────── */
   .sidebar { display: none !important; }
 
   .app-shell {
     flex-direction: column;
+    height: 100dvh;
   }
 
   .main {
+    flex: 1;
     height: 100dvh;
-    padding-bottom: 70px;
+    overflow-y: auto;
     overflow-x: hidden;
+    padding-bottom: calc(64px + env(safe-area-inset-bottom));
   }
+  .main::-webkit-scrollbar { display: none; }
 
-  /* ════════════════════════════════
+  /* ─────────────────────────────────
      НИЖНИЙ ТАБ-БАР
-  ════════════════════════════════ */
+  ───────────────────────────────── */
   .mobile-tabbar {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 64px;
-    background: #fff;
+    bottom: 0; left: 0; right: 0;
+    height: calc(60px + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+    background: #ffffff;
     border-top: 1px solid #E5D9CE;
     display: flex;
     align-items: stretch;
-    z-index: 100;
-    padding-bottom: env(safe-area-inset-bottom);
+    z-index: 200;
+    box-shadow: 0 -4px 20px rgba(0,0,0,.07);
   }
 
   .mobile-tab {
@@ -43,114 +52,229 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 3px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
+    gap: 2px;
     text-decoration: none;
-    color: #9A8070;
+    color: #B5A393;
     font-family: 'Nunito', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    transition: color 0.2s;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    transition: color 0.2s ease;
+    padding: 8px 4px;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .mobile-tab svg {
-    width: 22px;
-    height: 22px;
+    width: 24px; height: 24px;
     stroke: currentColor;
     fill: none;
-    stroke-width: 2;
+    stroke-width: 1.8;
+    transition: stroke 0.2s ease;
   }
 
   .mobile-tab.active {
     color: #E07B54;
   }
 
-  /* ════════════════════════════════
+  .mobile-tab.active svg {
+    stroke-width: 2.3;
+  }
+
+  /* ─────────────────────────────────
      PAGE HEADER
-  ════════════════════════════════ */
+  ───────────────────────────────── */
   .page-header {
-    padding: 16px 18px 12px;
+    padding: 20px 20px 14px;
+    border-bottom: 1px solid #EDE4DB;
+    background: #FAF8F5;
+    position: sticky;
+    top: 0;
+    z-index: 10;
   }
 
   .page-title {
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 800;
+    letter-spacing: -0.5px;
   }
 
   .page-sub {
     font-size: 13px;
+    margin-top: 3px;
   }
 
   .page-body {
-    padding: 16px 18px;
+    padding: 18px 16px 8px;
+    background: #F2EDE6;
+    min-height: calc(100dvh - 120px);
   }
 
-  /* ════════════════════════════════
+  /* ─────────────────────────────────
      HOME PAGE
-  ════════════════════════════════ */
+  ───────────────────────────────── */
+
+  /* Баннер */
   .welcome-banner {
-    border-radius: 16px;
-    margin-bottom: 16px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    min-height: 140px;
+  }
+
+  .welcome-banner-content {
+    padding: 22px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
   }
 
   .welcome-text-title {
     font-size: 18px;
+    margin-bottom: 5px;
   }
 
   .welcome-text-sub {
     font-size: 13px;
+    line-height: 1.5;
   }
 
+  /* Кнопка "Перейти к заданиям" — показываем на мобиле */
   .welcome-cta {
-    display: none;
+    display: block !important;
+    margin-left: 0;
   }
 
-  /* Статы — 2 колонки на мобиле вместо 3 */
+  .welcome-cta .btn-sm {
+    font-size: 13px;
+    padding: 10px 18px;
+    border-radius: 12px;
+  }
+
+  /* Статы — 2×2 сетка */
   .home-grid {
+    display: grid;
     grid-template-columns: 1fr 1fr !important;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
   }
 
-  /* Третья карточка — на всю ширину */
+  .stat-card {
+    padding: 16px 14px;
+    border-radius: 16px;
+    background: #fff;
+  }
+
+  .stat-card-label {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+
+  .stat-card-val {
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  .stat-card-desc {
+    font-size: 12px;
+    margin-top: 4px;
+  }
+
+  /* Третья карточка (медали) — на всю ширину */
   .home-grid .stat-card:nth-child(3) {
     grid-column: 1 / -1;
   }
 
-  .stat-card {
-    padding: 14px;
-    border-radius: 14px;
+  /* Секция "Модули курса" */
+  .section-title {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    margin-top: 4px;
+    color: #1E1610;
   }
 
-  .stat-card-val {
-    font-size: 28px;
-  }
-
-  /* Модули — одна колонка */
   .home-module-card {
-    padding: 14px 16px;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 8px;
   }
 
-  /* ════════════════════════════════
+  .home-module-card-icon { font-size: 28px; }
+  .home-module-card-title { font-size: 15px; }
+  .home-module-progress { width: 70px; }
+
+  /* ─────────────────────────────────
      TASKS PAGE
-  ════════════════════════════════ */
-  .task-card {
-    border-radius: 14px;
-    padding: 14px;
+  ───────────────────────────────── */
+  .module-block {
+    margin-bottom: 22px;
   }
 
-  /* Task panel — полноэкранный */
+  .module-header {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+
+  .module-title {
+    font-size: 16px;
+  }
+
+  .module-badge {
+    margin-left: auto;
+    font-size: 11px;
+    padding: 4px 10px;
+  }
+
+  .task-card {
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    gap: 12px;
+  }
+
+  .task-card-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    font-size: 20px;
+  }
+
+  .task-card-title { font-size: 14px; }
+  .task-card-sub   { font-size: 12px; }
+
+  .task-card-status {
+    width: 26px; height: 26px;
+  }
+
+  /* Панель задания — полноэкранная снизу */
   .task-panel {
     width: 100% !important;
-    border-radius: 0 !important;
-    top: 0 !important;
+    top: auto !important;
     bottom: 0 !important;
+    right: 0 !important;
+    left: 0 !important;
+    border-radius: 24px 24px 0 0 !important;
+    max-height: 92dvh;
+    transform: translateY(100%) !important;
+    box-shadow: 0 -8px 40px rgba(0,0,0,.18);
+  }
+
+  .task-panel.open {
+    transform: translateY(0) !important;
   }
 
   .task-panel-header {
-    padding: 16px 18px 14px;
+    padding: 18px 18px 14px;
+    border-radius: 24px 24px 0 0;
+  }
+
+  /* Ручка для свайпа */
+  .task-panel-header::before {
+    content: '';
+    display: block;
+    width: 40px; height: 4px;
+    background: #D4C4B5;
+    border-radius: 2px;
+    margin: 0 auto 14px;
   }
 
   .task-panel-body {
@@ -158,72 +282,170 @@
   }
 
   .task-banner {
-    flex-direction: column;
-    text-align: center;
-    padding: 20px 16px;
-    gap: 12px;
+    border-radius: 14px;
+    padding: 18px;
+    gap: 14px;
+    margin-bottom: 16px;
   }
 
-  .task-banner-emoji {
-    font-size: 44px;
-  }
+  .task-banner-emoji { font-size: 40px; }
+  .task-banner-info-title { font-size: 17px; }
 
   .task-panel-footer {
     padding: 12px 18px;
-    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
   }
 
-  /* ════════════════════════════════
+  .task-panel-footer .btn-primary {
+    max-width: 100%;
+    width: 100%;
+    font-size: 15px;
+    padding: 14px;
+  }
+
+  /* ─────────────────────────────────
      MEDALS PAGE
-  ════════════════════════════════ */
+  ───────────────────────────────── */
   .medals-summary {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr !important;
     gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .medals-summary-card {
+    border-radius: 16px;
+    padding: 16px 14px;
+  }
+
+  .medals-summary-num {
+    font-size: 36px;
+  }
+
+  .medals-summary-label {
+    font-size: 12px;
   }
 
   .medals-grid {
     grid-template-columns: 1fr 1fr !important;
     gap: 10px;
+    margin-bottom: 20px;
   }
 
   .medal-card {
-    padding: 16px 10px;
-  }
-
-  .medal-icon {
-    font-size: 28px;
-  }
-
-  /* ════════════════════════════════
-     PROFILE PAGE
-  ════════════════════════════════ */
-  .profile-layout {
-    grid-template-columns: 1fr !important;
-    gap: 14px;
-  }
-
-  .profile-card-main {
+    padding: 18px 12px;
     border-radius: 16px;
   }
 
-  /* ════════════════════════════════
+  .medal-icon  { font-size: 32px; margin-bottom: 8px; }
+  .medal-name  { font-size: 12px; }
+  .medal-cond  { font-size: 10px; }
+
+  /* ─────────────────────────────────
      SAVED PAGE
-  ════════════════════════════════ */
+  ───────────────────────────────── */
+  .saved-module-block {
+    margin-bottom: 22px;
+  }
+
+  .saved-module-header {
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+  }
+
+  .saved-module-title { font-size: 15px; }
+
   .saved-grid {
     grid-template-columns: 1fr 1fr !important;
     gap: 10px;
   }
 
+  .saved-card {
+    border-radius: 14px;
+  }
+
+  .upload-card {
+    border-radius: 14px;
+  }
+
   .saving-toast {
-    bottom: 80px;
+    bottom: calc(70px + env(safe-area-inset-bottom));
     right: 16px;
     left: 16px;
     text-align: center;
   }
 
-  /* ════════════════════════════════
-     AUTH PAGE
-  ════════════════════════════════ */
+  /* Модалки saved — на всю ширину снизу */
+  .sw-backdrop {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .sw-modal {
+    border-radius: 24px 24px 0 0;
+    max-width: 100%;
+    padding: 24px 20px;
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+    max-height: 90dvh;
+  }
+
+  /* ─────────────────────────────────
+     PROFILE PAGE
+  ───────────────────────────────── */
+  .profile-layout {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+
+  .profile-card-main {
+    border-radius: 20px;
+    padding: 24px 20px;
+  }
+
+  .profile-avatar-big {
+    width: 72px; height: 72px;
+    font-size: 28px;
+  }
+
+  .profile-name-big  { font-size: 18px; }
+  .profile-email-txt { font-size: 12px; }
+
+  .profile-stats-row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .pstat { border-radius: 10px; padding: 12px 6px; }
+  .pstat-val { font-size: 22px; }
+  .pstat-lbl { font-size: 10px; }
+
+  .settings-card {
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .settings-card-title {
+    padding: 12px 16px 8px;
+    font-size: 10px;
+  }
+
+  .menu-row {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .menu-row-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+
+  .menu-row-title { font-size: 14px; }
+  .menu-row-sub   { font-size: 11px; }
+
+  /* ─────────────────────────────────
+     AUTH PAGE (мобиле)
+  ───────────────────────────────── */
   html:has(.auth-screen),
   body:has(.auth-screen) {
     overflow: hidden;
@@ -231,27 +453,44 @@
 
   .auth-screen {
     align-items: flex-end !important;
+    background-position: center top !important;
   }
 
   .auth-box {
     width: 100% !important;
     border-radius: 28px 28px 0 0 !important;
-    padding: 32px 24px 40px !important;
-    max-height: 80dvh;
+    padding: 28px 20px !important;
+    padding-bottom: calc(28px + env(safe-area-inset-bottom)) !important;
+    max-height: 85dvh;
     overflow-y: auto;
-    /* Сброс фиксированной высоты — на мобиле авто */
     height: auto !important;
+    transition: none !important;
+  }
+
+  .auth-brand { margin-bottom: 20px; }
+  .auth-brand-name { font-size: 28px; }
+
+  .auth-tabs { margin-bottom: 18px; }
+
+  .form-group { margin-bottom: 12px; }
+
+  .form-input {
+    padding: 14px 15px;
+    font-size: 16px; /* предотвращает zoom на iOS */
+    border-radius: 14px;
   }
 
   .btn-primary {
     width: 100% !important;
+    margin-top: 14px;
+    padding: 15px;
+    font-size: 16px;
+    border-radius: 16px;
   }
 
-  /* ════════════════════════════════
-     ONBOARDING / LANDING (onboarding.html)
-  ════════════════════════════════ */
-
-  /* Override the inline overflow:hidden so the page can scroll on mobile */
+  /* ─────────────────────────────────
+     ONBOARDING / ЛЕНДИНГ
+  ───────────────────────────────── */
   html:has(.ob-wrap),
   body:has(.ob-wrap) {
     overflow: auto !important;
@@ -259,21 +498,19 @@
   }
 
   .ob-wrap {
-    flex-direction: column;
-    height: auto;
+    flex-direction: column !important;
+    height: auto !important;
     min-height: 100dvh;
     overflow-y: auto;
-    align-items: stretch;
   }
 
-  /* Правая секция с лисой — вверху, ~42% экрана */
+  /* Лиса/изображение — сверху */
   .ob-right {
-    width: 100%;
-    height: 42dvh;
-    min-height: 240px;
+    width: 100% !important;
+    height: 38dvh !important;
+    min-height: 220px;
     order: -1;
     flex-shrink: 0;
-    background: radial-gradient(ellipse 80% 70% at 50% 60%, rgba(224,123,84,.1) 0%, transparent 70%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -281,58 +518,94 @@
   }
 
   .fox-container {
-    width: min(340px, 80vw);
-    height: min(340px, 80vw);
+    width: min(300px, 75vw) !important;
+    height: min(300px, 75vw) !important;
   }
 
-  /* Левая секция — контент снизу */
+  /* Контент — снизу */
   .ob-left {
     flex: 1;
-    padding: 28px 24px;
-    padding-bottom: 120px;
-    justify-content: flex-start;
+    padding: 28px 22px 110px !important;
+    justify-content: flex-start !important;
   }
 
   .ob-title {
-    font-size: clamp(36px, 9vw, 52px);
-    letter-spacing: -1px;
-    margin-bottom: 14px;
+    font-size: clamp(34px, 9vw, 50px) !important;
+    line-height: 1.1 !important;
+    margin-bottom: 12px;
   }
 
   .ob-tagline {
     font-size: 14px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
   .ob-features {
-    margin-bottom: 28px;
     gap: 8px;
+    margin-bottom: 24px;
   }
 
-  .ob-feature {
-    font-size: 14px;
-  }
+  .ob-feature { font-size: 14px; }
 
-  /* Кнопка "Начать обучение" — фиксированная снизу, оранжевая, на всю ширину */
+  /* Кнопка — фиксированная снизу */
   .ob-btn {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    border-radius: 0;
-    padding: 18px 24px;
-    padding-bottom: calc(18px + env(safe-area-inset-bottom));
-    justify-content: center;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    border-radius: 0 !important;
+    padding: 18px 24px !important;
+    padding-bottom: calc(18px + env(safe-area-inset-bottom)) !important;
+    justify-content: center !important;
     font-size: 16px;
     z-index: 50;
-    box-shadow: 0 -4px 20px rgba(224,123,84,.25);
+    box-shadow: 0 -4px 24px rgba(224,123,84,.3);
   }
 
-  .ob-login {
-    margin-top: 12px;
-    font-size: 13px;
-    text-align: center;
+  /* ─────────────────────────────────
+     МОДАЛКИ (edit profile, lang, reminder)
+  ───────────────────────────────── */
+  .edit-modal-backdrop {
+    align-items: flex-end !important;
+    padding: 0 !important;
   }
 
+  .edit-modal {
+    width: 100% !important;
+    border-radius: 24px 24px 0 0 !important;
+    padding: 24px 20px !important;
+    padding-bottom: calc(24px + env(safe-area-inset-bottom)) !important;
+    max-height: 90dvh;
+    overflow-y: auto;
+    transform: translateY(20px) !important;
+  }
+
+  .edit-modal-backdrop.open .edit-modal {
+    transform: translateY(0) !important;
+  }
+
+  /* ─────────────────────────────────
+     МЕДАЛЬНЫЙ ТОСТ
+  ───────────────────────────────── */
+  .medal-toast {
+    bottom: calc(70px + env(safe-area-inset-bottom)) !important;
+    right: 12px !important;
+    left: 12px !important;
+    min-width: unset !important;
+    max-width: unset !important;
+  }
+
+  /* Тост уровня */
+  .levelup-toast {
+    bottom: calc(80px + env(safe-area-inset-bottom)) !important;
+    left: 16px !important;
+    right: 16px !important;
+    transform: translateX(0) translateY(40px) scale(0.92) !important;
+    min-width: unset !important;
+  }
+
+  .levelup-toast--show {
+    transform: translateX(0) translateY(0) scale(1) !important;
+  }
 }
